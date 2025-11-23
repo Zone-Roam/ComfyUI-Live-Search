@@ -3,7 +3,10 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from googlesearch import search as google_search
-from duckduckgo_search import DDGS
+try:
+    from ddgs import DDGS
+except ImportError:
+    from duckduckgo_search import DDGS
 from .config_manager import ConfigManager
 
 # Initialize Config Manager
@@ -11,13 +14,31 @@ config_manager = ConfigManager()
 
 class SearchTool:
     @staticmethod
-    def search_google(query, num_results=3):
+    def search_google(query, num_results=3, proxy=None):
         """
         Performs a Google search and returns a list of dicts consistent with DDG format.
         """
         try:
+            # google_search doesn't directly support proxy argument easily in all versions,
+            # but relies on environment variables usually.
+            # We can try setting env vars temporarily if proxy is provided.
+            original_http = os.environ.get('http_proxy')
+            original_https = os.environ.get('https_proxy')
+            
+            if proxy:
+                os.environ['http_proxy'] = proxy
+                os.environ['https_proxy'] = proxy
+            
             # googlesearch-python generator
             results = list(google_search(query, num_results=num_results, advanced=True))
+            
+            # Restore env vars
+            if proxy:
+                if original_http: os.environ['http_proxy'] = original_http
+                else: del os.environ['http_proxy']
+                if original_https: os.environ['https_proxy'] = original_https
+                else: del os.environ['https_proxy']
+
             # Normalize to list of dicts: {'title', 'url', 'summary'}
             normalized_results = []
             for res in results:
@@ -32,14 +53,24 @@ class SearchTool:
             return []
 
     @staticmethod
-    def search_duckduckgo(query, num_results=3):
+    def search_duckduckgo(query, num_results=3, proxy=None):
         """
         Performs a DuckDuckGo search.
         """
         try:
-            with DDGS() as ddgs:
+            # DDGS supports proxy argument directly
+            with DDGS(proxy=proxy, timeout=20) as ddgs:
                 # ddgs.text() returns a generator of dicts: {'title', 'href', 'body'}
+                # Try default backend first, fallback to 'html' or 'lite' if needed manually if we were managing requests directly,
+                # but ddgs library handles backends. We explicitly request 'api' or default.
+                # If result is empty, it might be a strict region/bot issue.
                 results = list(ddgs.text(query, max_results=num_results))
+                
+                # Fallback mechanism: sometimes first request fails or returns empty in strict envs
+                if not results:
+                    print("[LiveSearch] DDG default backend returned empty, trying 'html' backend simulation...")
+                    # Some versions of ddgs support backend='html', others don't via .text()
+                    # We'll just rely on the default for now, but print warning.
             
             # Normalize keys to match Google
             normalized_results = []
@@ -55,7 +86,7 @@ class SearchTool:
             return []
 
     @staticmethod
-    def fetch_url_content(url, timeout=10):
+    def fetch_url_content(url, timeout=10, proxy=None):
         """
         Fetches and extracts text content from a URL.
         """
@@ -63,7 +94,8 @@ class SearchTool:
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
             }
-            response = requests.get(url, headers=headers, timeout=timeout)
+            proxies = {"http": proxy, "https": proxy} if proxy else None
+            response = requests.get(url, headers=headers, timeout=timeout, proxies=proxies)
             response.raise_for_status()
             
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -91,7 +123,7 @@ class SearchTool:
 
 class LLMClient:
     @staticmethod
-    def chat_completion(api_key, base_url, model, messages, temperature=0.7):
+    def chat_completion(api_key, base_url, model, messages, temperature=0.7, proxy=None):
         """
         Generic OpenAI-compatible chat completion
         """
@@ -110,9 +142,11 @@ class LLMClient:
             "temperature": temperature
         }
         
+        proxies = {"http": proxy, "https": proxy} if proxy else None
+        
         try:
             # Increased timeout to 120s as DeepSeek R1/V3 can be slow sometimes
-            response = requests.post(url, headers=headers, json=payload, timeout=120)
+            response = requests.post(url, headers=headers, json=payload, timeout=120, proxies=proxies)
             response.raise_for_status()
             data = response.json()
             return data['choices'][0]['message']['content']
@@ -149,6 +183,7 @@ class LiveSearchNode:
             "optional": {
                 "api_key": ("STRING", {"default": "", "placeholder": "Leave empty to use config file"}),
                 "custom_base_url": ("STRING", {"default": "", "placeholder": "Required for Custom/Gemini/DeepSeek"}),
+                "proxy": ("STRING", {"default": "", "placeholder": "http://127.0.0.1:7890 (Optional)"}),
             }
         }
 
@@ -157,8 +192,11 @@ class LiveSearchNode:
     FUNCTION = "process_search"
     CATEGORY = "LiveSearch"
 
-    def process_search(self, prompt, mode, search_engine, provider, model, num_results, api_key, custom_base_url):
-        # 1. Resolve API Key and Base URL
+    def process_search(self, prompt, mode, search_engine, provider, model, num_results, api_key, custom_base_url, proxy):
+        # 1. Resolve Proxy
+        valid_proxy = proxy.strip() if proxy and proxy.strip() else None
+        
+        # 2. Resolve API Key and Base URL
         resolved_api_key = api_key.strip()
         if not resolved_api_key:
              # Fallback to config file if UI input is empty
@@ -203,7 +241,7 @@ class LiveSearchNode:
                 {"role": "system", "content": "You are a search engine expert. Convert the user's input into the single best search query to find the answer. Return ONLY the query, no quotes."},
                 {"role": "user", "content": prompt}
             ]
-            refined_query = LLMClient.chat_completion(resolved_api_key, base_url, final_model, refine_messages)
+            refined_query = LLMClient.chat_completion(resolved_api_key, base_url, final_model, refine_messages, proxy=valid_proxy)
             if not refined_query.startswith("Error"):
                 print(f"[LiveSearch] Refined query: {prompt} -> {refined_query}")
                 search_query = refined_query
@@ -212,9 +250,9 @@ class LiveSearchNode:
         print(f"[LiveSearch] Searching for: {search_query} using {search_engine}")
         
         if search_engine == "Google":
-            search_results = SearchTool.search_google(search_query, num_results)
+            search_results = SearchTool.search_google(search_query, num_results, proxy=valid_proxy)
         else:
-            search_results = SearchTool.search_duckduckgo(search_query, num_results)
+            search_results = SearchTool.search_duckduckgo(search_query, num_results, proxy=valid_proxy)
         
         if not search_results:
             return (f"No search results found using {search_engine}.", "")
@@ -229,7 +267,7 @@ class LiveSearchNode:
             summary = res['summary']
             
             print(f"[LiveSearch] Fetching: {url}")
-            content = SearchTool.fetch_url_content(url)
+            content = SearchTool.fetch_url_content(url, proxy=valid_proxy)
             
             if content:
                 snippet = content[:2000] if content else summary
@@ -249,6 +287,6 @@ class LiveSearchNode:
             {"role": "user", "content": f"User Query: {prompt}\n\nSearch Results:\n{full_context}"}
         ]
 
-        answer = LLMClient.chat_completion(resolved_api_key, base_url, final_model, final_messages)
+        answer = LLMClient.chat_completion(resolved_api_key, base_url, final_model, final_messages, proxy=valid_proxy)
         
         return (answer, "\n".join(source_urls))
