@@ -83,11 +83,21 @@ Then restart ComfyUI.
 | Parameter | Description |
 | :--- | :--- |
 | **prompt** | Your query or location. e.g., *"What is the price of Bitcoin?"* or *"35.68, 139.76"* |
-| **mode** | • `Smart Search`: LLM optimizes your query first (Recommended).<br>• `Direct Search`: Searches exactly what you type.<br>• `Weather/Time`: Optimized for location-based lookup. |
+| **mode** | • `Normal Search`: Standard search mode.<br>• `Weather/Time Mode`: Optimized for weather/time queries with auto-prefix. |
+| **optimize_prompt** | Prompt optimization toggle. When enabled, LLM rewrites your query into better search keywords.<br>• OFF (default): Use original input<br>• ON: LLM optimizes, outputs comparison |
 | **search_engine** | • `DuckDuckGo`: Recommended for stability.<br>• `Google`: Alternative option. |
 | **provider** | Choose your LLM provider: `OpenAI`, `DeepSeek (Official/Aliyun/Volcengine)`, `Gemini`, etc. |
 | **model** | The model name (e.g., `gpt-4o-mini`, `deepseek-chat`, `deepseek-r1`). |
 | **api_key** | (Optional) Your API Key. If left empty, it tries to load from `api_config.json`. |
+| **proxy** | (Optional) Proxy address like `http://127.0.0.1:7890`. Leave empty for direct connection. |
+
+#### Outputs
+
+| Output | Description |
+| :--- | :--- |
+| **answer** | AI-generated answer based on search results |
+| **source_urls** | List of referenced web page links |
+| **optimized_prompt** | Shows prompt optimization status (whether optimized, before/after comparison) |
 
 #### Example Workflows
 

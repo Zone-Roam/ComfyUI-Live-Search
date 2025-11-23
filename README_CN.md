@@ -83,11 +83,21 @@ pip install -r requirements.txt
 | 参数名 | 说明 |
 | :--- | :--- |
 | **prompt** | 你的问题或位置坐标。例如 *"比特币现在的价格是多少？"* 或 *"35.68, 139.76"* |
-| **mode** | • `Smart Search`: 智能搜索，LLM 会先优化搜索词（推荐）。<br>• `Direct Search`: 直接搜索，不修改你的输入。<br>• `Weather/Time`: 专为经纬度查询优化的模式。 |
+| **mode** | • `Normal Search`: 普通搜索模式。<br>• `Weather/Time Mode`: 专为天气/时间查询优化，自动添加相关搜索前缀。 |
+| **optimize_prompt** | 提示词优化开关。开启后，LLM 会将你的问题改写为更适合搜索的关键词。<br>• 关闭（默认）：直接使用原始输入<br>• 开启：LLM 优化后搜索，并输出优化结果 |
 | **search_engine** | • `DuckDuckGo`: 推荐，更稳定。<br>• `Google`: 备选方案。 |
 | **provider** | 选择 LLM 提供商：支持 `OpenAI`, `DeepSeek (官方/阿里云/火山)`, `Gemini` 等。 |
 | **model** | 模型名称（如 `gpt-4o-mini`, `deepseek-chat`, `deepseek-r1`）。 |
 | **api_key** | （可选）你的 API Key。留空则尝试读取配置文件。 |
+| **proxy** | （可选）代理地址，如 `http://127.0.0.1:7890`。留空则直连。 |
+
+#### 输出说明
+
+| 输出名 | 说明 |
+| :--- | :--- |
+| **answer** | AI 根据搜索结果生成的答案 |
+| **source_urls** | 引用的网页链接列表 |
+| **optimized_prompt** | 显示提示词优化情况（是否优化、优化前后对比） |
 
 #### 典型工作流示例
 

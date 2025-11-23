@@ -167,7 +167,8 @@ class LiveSearchNode:
         return {
             "required": {
                 "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., What is the weather in Tokyo right now? or just 35.6762, 139.6503"}),
-                "mode": (["Smart Search (Auto-Query)", "Direct Search", "Weather/Time Mode"], {"default": "Smart Search (Auto-Query)"}),
+                "mode": (["Normal Search", "Weather/Time Mode"], {"default": "Normal Search"}),
+                "optimize_prompt": ("BOOLEAN", {"default": False, "label_on": "Optimize ON", "label_off": "Optimize OFF"}),
                 "search_engine": (["DuckDuckGo", "Google"], {"default": "DuckDuckGo"}),
                 "provider": ([
                     "OpenAI", 
@@ -187,12 +188,12 @@ class LiveSearchNode:
             }
         }
 
-    RETURN_TYPES = ("STRING", "STRING")
-    RETURN_NAMES = ("answer", "source_urls")
+    RETURN_TYPES = ("STRING", "STRING", "STRING")
+    RETURN_NAMES = ("answer", "source_urls", "optimized_prompt")
     FUNCTION = "process_search"
     CATEGORY = "LiveSearch"
 
-    def process_search(self, prompt, mode, search_engine, provider, model, num_results, api_key, custom_base_url, proxy):
+    def process_search(self, prompt, mode, optimize_prompt, search_engine, provider, model, num_results, api_key, custom_base_url, proxy):
         # 1. Resolve Proxy
         valid_proxy = proxy.strip() if proxy and proxy.strip() else None
         
@@ -232,19 +233,29 @@ class LiveSearchNode:
         
         # 2. Determine Search Query
         search_query = prompt
+        optimized_prompt_output = ""  # Track optimized prompt for output
         
+        # Apply mode-specific query modification
         if mode == "Weather/Time Mode":
             search_query = f"current time and weather at location {prompt}"
+            optimized_prompt_output = f"[Mode Modified] {search_query}"
         
-        elif mode == "Smart Search (Auto-Query)":
+        # Apply prompt optimization if enabled
+        if optimize_prompt:
             refine_messages = [
                 {"role": "system", "content": "You are a search engine expert. Convert the user's input into the single best search query to find the answer. Return ONLY the query, no quotes."},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": search_query}
             ]
             refined_query = LLMClient.chat_completion(resolved_api_key, base_url, final_model, refine_messages, proxy=valid_proxy)
             if not refined_query.startswith("Error"):
-                print(f"[LiveSearch] Refined query: {prompt} -> {refined_query}")
+                print(f"[LiveSearch] Prompt optimized: {search_query} -> {refined_query}")
+                optimized_prompt_output = f"Original: {prompt}\nOptimized: {refined_query}"
                 search_query = refined_query
+            else:
+                optimized_prompt_output = f"Optimization failed: {refined_query}"
+        else:
+            if not optimized_prompt_output:
+                optimized_prompt_output = f"No optimization (using original prompt)"
 
         # 3. Perform Search
         print(f"[LiveSearch] Searching for: {search_query} using {search_engine}")
@@ -255,7 +266,7 @@ class LiveSearchNode:
             search_results = SearchTool.search_duckduckgo(search_query, num_results, proxy=valid_proxy)
         
         if not search_results:
-            return (f"No search results found using {search_engine}.", "")
+            return (f"No search results found using {search_engine}.", "", optimized_prompt_output)
 
         # 4. Extract Content
         context_data = []
@@ -289,4 +300,4 @@ class LiveSearchNode:
 
         answer = LLMClient.chat_completion(resolved_api_key, base_url, final_model, final_messages, proxy=valid_proxy)
         
-        return (answer, "\n".join(source_urls))
+        return (answer, "\n".join(source_urls), optimized_prompt_output)
