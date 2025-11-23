@@ -43,21 +43,36 @@
 
 ## 🚀 安装说明
 
-### 方法一：Git 克隆（推荐）
+### 方法一：通过 ComfyUI Manager 安装（推荐）
+
+1. 在 ComfyUI 中打开 **Manager** 面板
+2. 点击 **Install Custom Nodes**
+3. 搜索 `Live Search`
+4. 点击 **Install** 并重启 ComfyUI
+
+### 方法二：Git 克隆
 
 进入你的 ComfyUI `custom_nodes` 目录并运行：
 
 ```bash
-git clone https://github.com/yourusername/ComfyUI-Live-Search.git
+git clone https://github.com/Louis-Kahn/ComfyUI-Live-Search.git
 cd ComfyUI-Live-Search
+
+# 如果使用 Portable 版本的 ComfyUI（推荐）
+..\..\..\python_embeded\python.exe -m pip install -r requirements.txt
+
+# 如果使用系统 Python 或虚拟环境
 pip install -r requirements.txt
 ```
 
-### 方法二：手动安装
+然后重启 ComfyUI。
 
-1. 下载本项目的 ZIP 压缩包。
-2. 解压到 `ComfyUI/custom_nodes/ComfyUI-Live-Search`。
-3. 安装依赖：`pip install -r requirements.txt`
+### 方法三：手动安装
+
+1. 下载本项目的 ZIP 压缩包
+2. 解压到 `ComfyUI/custom_nodes/ComfyUI-Live-Search`
+3. 参考方法二安装依赖
+4. 重启 ComfyUI
 
 ## 🛠️ 使用指南
 

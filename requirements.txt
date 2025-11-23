@@ -1,4 +1,4 @@
-requests
-beautifulsoup4
-googlesearch-python
-duckduckgo-search
+requests>=2.25.0
+beautifulsoup4>=4.9.0
+googlesearch-python>=1.0.0
+duckduckgo-search>=3.0.0

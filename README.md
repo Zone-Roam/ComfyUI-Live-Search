@@ -43,21 +43,36 @@ This project is inspired by the search capabilities of `comfyui_LLM_Polymath` an
 
 ## 🚀 Installation
 
-### Method 1: Git Clone (Recommended)
+### Method 1: via ComfyUI Manager (Recommended)
+
+1. Open **Manager** panel in ComfyUI
+2. Click **Install Custom Nodes**
+3. Search for `Live Search`
+4. Click **Install** and restart ComfyUI
+
+### Method 2: Git Clone
 
 Navigate to your ComfyUI `custom_nodes` directory and run:
 
 ```bash
-git clone https://github.com/yourusername/ComfyUI-Live-Search.git
+git clone https://github.com/Louis-Kahn/ComfyUI-Live-Search.git
 cd ComfyUI-Live-Search
+
+# If using Portable version of ComfyUI (Recommended)
+..\..\..\python_embeded\python.exe -m pip install -r requirements.txt
+
+# If using system Python or virtual environment
 pip install -r requirements.txt
 ```
 
-### Method 2: Manual
+Then restart ComfyUI.
 
-1. Download the ZIP file.
-2. Extract it to `ComfyUI/custom_nodes/ComfyUI-Live-Search`.
-3. Install dependencies: `pip install -r requirements.txt`
+### Method 3: Manual Installation
+
+1. Download the ZIP file
+2. Extract it to `ComfyUI/custom_nodes/ComfyUI-Live-Search`
+3. Install dependencies as shown in Method 2
+4. Restart ComfyUI
 
 ## 🛠️ Usage Guide
 
