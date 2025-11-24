@@ -255,6 +255,43 @@ pip install -r requirements.txt
 
 ---
 
+## 💰 免费使用方案
+
+**不想付费使用 API? 这里有完全免费的方案!**
+
+### 推荐方案: Ollama 本地模型 ⭐
+
+1. **安装 Ollama**: 访问 https://ollama.com/ 下载安装
+2. **下载模型**: 
+   ```bash
+   ollama pull qwen2.5      # 推荐: 通义千问2.5
+   ollama pull deepseek-r1  # 或者: DeepSeek R1
+   ollama pull llama3.3     # 或者: Llama 3.3
+   ```
+3. **在节点中配置**:
+   - Provider: `Ollama (Local)`
+   - Model: `qwen2.5` (或其他已下载的模型)
+   - Base URL: `http://localhost:11434/v1`
+   - API Key: 留空
+
+**优势**:
+- ✅ 完全免费,无使用限制
+- ✅ 数据隐私,完全本地运行
+- ✅ 无网络延迟(除了搜索部分)
+- ✅ 支持 qwen2.5, llama3.3, deepseek-r1 等优秀模型
+
+### 备选方案: 超低价 API
+
+如果本地资源不足,可以选择这些几乎免费的方案:
+
+| 提供商 | 价格 | 说明 |
+|--------|------|------|
+| **DeepSeek** | ¥1/百万tokens | 官方API,极致性价比 |
+| **硅基流动** | 有免费额度 | 国内访问友好 |
+| **Groq** | 有免费额度 | 速度极快 |
+
+---
+
 ## ⚙️ 高级配置（可选）
 
 如果你是在本地电脑使用，不想每次都复制粘贴 API Key，有两种配置方式：

@@ -254,6 +254,43 @@ We chose DuckDuckGo to ensure the node works **reliably** across all environment
 
 ---
 
+## 💰 Free Usage Options
+
+**Don't want to pay for APIs? Here are completely free solutions!**
+
+### Recommended: Ollama Local Models ⭐
+
+1. **Install Ollama**: Visit https://ollama.com/ to download
+2. **Download Models**: 
+   ```bash
+   ollama pull qwen2.5      # Recommended: Qwen 2.5
+   ollama pull deepseek-r1  # Or: DeepSeek R1
+   ollama pull llama3.3     # Or: Llama 3.3
+   ```
+3. **Configure in Node**:
+   - Provider: `Ollama (Local)`
+   - Model: `qwen2.5` (or other downloaded models)
+   - Base URL: `http://localhost:11434/v1`
+   - API Key: Leave empty
+
+**Advantages**:
+- ✅ Completely free, no usage limits
+- ✅ Privacy-focused, runs entirely locally
+- ✅ No network latency (except search part)
+- ✅ Supports excellent models like qwen2.5, llama3.3, deepseek-r1
+
+### Alternative: Ultra-Low-Cost APIs
+
+If local resources are limited, consider these nearly-free options:
+
+| Provider | Price | Notes |
+|----------|-------|-------|
+| **DeepSeek** | $0.14/million tokens | Official API, best value |
+| **SiliconFlow** | Free tier available | China-friendly |
+| **Groq** | Free tier available | Extremely fast |
+
+---
+
 ## ⚙️ Configuration (Optional)
 
 For local users who don't want to paste their API key every time, there are two configuration methods:
