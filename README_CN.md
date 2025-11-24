@@ -82,6 +82,7 @@
   - **Anthropic**: Claude 4.5 Sonnet/Haiku, Claude 4.1 Opus（原生API支持）
   - **火山引擎(豆包)**: doubao-seed-1.6系列, deepseek-v3.1（已测试验证）
   - **通义千问**: qwen3-max, qwen-plus, qwen-flash（阿里云百炼）
+  - **硅基流动**: deepseek-v3, Qwen2.5系列, Llama-3.1, Yi-1.5, GLM-4（国内友好，有免费额度）
   - **Grok**: grok-2系列（xAI官方）
   - **本地部署**: Ollama支持 llama4, qwen3, deepseek-v3, phi4等
   

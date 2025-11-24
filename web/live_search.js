@@ -80,6 +80,20 @@ const API_LOADER_MODEL_CONFIGS = {
         "qwen-max",
         "qwen-turbo"
     ],
+    "SiliconFlow (硅基流动)": [
+        "deepseek-chat",
+        "deepseek-reasoner",
+        "deepseek-v3",
+        "Qwen/Qwen2.5-72B-Instruct",
+        "Qwen/Qwen2.5-32B-Instruct",
+        "Qwen/Qwen2.5-14B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "meta-llama/Llama-3.1-70B-Instruct",
+        "meta-llama/Llama-3.1-8B-Instruct",
+        "01-ai/Yi-1.5-34B-Chat",
+        "01-ai/Yi-1.5-9B-Chat",
+        "THUDM/glm-4-9b-chat"
+    ],
     "Ollama (Local)": [
         "llama4",
         "llama3.3",

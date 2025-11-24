@@ -82,6 +82,7 @@
   - **Anthropic**: Claude 4.5 Sonnet/Haiku, Claude 4.1 Opus (native API support)
   - **Volcengine (Doubao)**: doubao-seed-1.6 series, deepseek-v3.1 (tested and verified)
   - **Qwen (Aliyun)**: qwen3-max, qwen-plus, qwen-flash (Aliyun DashScope)
+  - **SiliconFlow (硅基流动)**: deepseek-v3, Qwen2.5 series, Llama-3.1, Yi-1.5, GLM-4 (China-friendly, free tier available)
   - **Grok**: grok-2 series (xAI Official)
   - **Local Deployment**: Ollama supports llama4, qwen3, deepseek-v3, phi4, etc.
   
