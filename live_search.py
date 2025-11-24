@@ -30,9 +30,14 @@ MODEL_CONFIGS = {
         "deepseek-v2.5",
         "deepseek-chat"
     ],
-    "DeepSeek (Volcengine)": [
-        "deepseek-chat",
-        "deepseek-v3"
+    "Volcengine (Doubao)": [
+        "doubao-1.5-pro-32k",
+        "doubao-1.5-lite",
+        "doubao-pro-32k",
+        "doubao-lite-32k",
+        "deepseek-v3",
+        "deepseek-r1",
+        "kimi-k2"
     ],
     "Gemini (OpenAI-Format)": [
         "gemini-2.0-flash-exp",

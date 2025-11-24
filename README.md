@@ -10,7 +10,7 @@
 
 **🔥 Use Cases**: Real-time Weather · News Summary · Fact Checking · Product Reviews · Web Scraping
 
-**🤖 Supported Models**: DeepSeek · Qwen · Doubao · OpenAI · Gemini · Claude · Grok · Ollama
+**🤖 Supported Models**: DeepSeek · Qwen · Doubao(Volcengine) · OpenAI · Gemini · Claude · Ollama
 
 [中文文档](README_CN.md) | [English](README.md)
 
@@ -78,7 +78,8 @@
   - **DeepSeek**: Full support for DeepSeek-V3 and DeepSeek-R1 (Official API / Aliyun Bailian / Volcengine Ark)
   - **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro, gemini-1.5-flash
   - **Anthropic**: Claude series models
-  - **Chinese Platforms**: Grok, Doubao, Qwen
+  - **Volcengine (Doubao)**: doubao-1.5 series, deepseek-v3/r1, kimi-k2
+  - **Qwen (Aliyun)**: qwen-max, qwen-plus, qwen-turbo
   - **Local Deployment**: Ollama support
 
 - **🎯 Smart Features**:

@@ -69,12 +69,20 @@ MODEL_CONFIGS = {
             "grok-beta"
         ]
     },
-    "Doubao (ByteDance)": {
+    "Volcengine (Doubao)": {
         "base_url": "https://ark.cn-beijing.volces.com/api/v3",
         "models": [
+            "doubao-1.5-pro-32k",
+            "doubao-1.5-pro-256k",
+            "doubao-1.5-lite",
+            "doubao-1.5-vision-pro",
+            "doubao-1.5-thinking-pro",
             "doubao-pro-32k",
-            "doubao-pro-4k",
-            "doubao-lite-32k"
+            "doubao-lite-32k",
+            "deepseek-v3.1",
+            "deepseek-r1",
+            "deepseek-v3",
+            "kimi-k2"
         ]
     },
     "Qwen (Aliyun)": {

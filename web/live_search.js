@@ -19,9 +19,14 @@ const LEGACY_MODEL_CONFIGS = {
         "deepseek-v2.5",
         "deepseek-chat"
     ],
-    "DeepSeek (Volcengine)": [
-        "deepseek-chat",
-        "deepseek-v3"
+    "Volcengine (Doubao)": [
+        "doubao-1.5-pro-32k",
+        "doubao-1.5-lite",
+        "doubao-pro-32k",
+        "doubao-lite-32k",
+        "deepseek-v3",
+        "deepseek-r1",
+        "kimi-k2"
     ],
     "Gemini (OpenAI-Format)": [
         "gemini-2.0-flash-exp",
@@ -74,10 +79,18 @@ const API_LOADER_MODEL_CONFIGS = {
         "grok-2-vision-1212",
         "grok-beta"
     ],
-    "Doubao (ByteDance)": [
+    "Volcengine (Doubao)": [
+        "doubao-1.5-pro-32k",
+        "doubao-1.5-pro-256k",
+        "doubao-1.5-lite",
+        "doubao-1.5-vision-pro",
+        "doubao-1.5-thinking-pro",
         "doubao-pro-32k",
-        "doubao-pro-4k",
-        "doubao-lite-32k"
+        "doubao-lite-32k",
+        "deepseek-v3.1",
+        "deepseek-r1",
+        "deepseek-v3",
+        "kimi-k2"
     ],
     "Qwen (Aliyun)": [
         "qwen-max",

@@ -10,7 +10,7 @@
 
 **🔥 热门场景**: 实时天气 · 新闻摘要 · 事实查询 · 产品评测 · 网页抓取
 
-**🤖 支持模型**: DeepSeek · 通义千问 · 豆包 · OpenAI · Gemini · Claude · Grok · Ollama
+**🤖 支持模型**: DeepSeek · 通义千问 · 豆包(火山引擎) · OpenAI · Gemini · Claude · Ollama
 
 [中文文档](README_CN.md) | [English](README.md)
 
@@ -78,7 +78,8 @@
   - **DeepSeek**: 完美支持 DeepSeek-V3 和 DeepSeek-R1（官方 API / 阿里云百炼 / 火山引擎方舟）
   - **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro, gemini-1.5-flash
   - **Anthropic**: Claude 系列模型
-  - **国内平台**: Grok, Doubao（豆包）, Qwen（通义千问）
+  - **火山引擎(豆包)**: doubao-1.5系列, deepseek-v3/r1, kimi-k2
+  - **通义千问**: qwen-max, qwen-plus, qwen-turbo
   - **本地部署**: Ollama 支持
 
 - **🎯 智能功能**：
