@@ -189,8 +189,12 @@ class LiveSearchNode:
                     "OpenAI", 
                     "DeepSeek (Official)", 
                     "DeepSeek (Aliyun)", 
-                    "DeepSeek (Volcengine)",
+                    "Volcengine (Doubao)",
                     "Gemini (OpenAI-Format)", 
+                    "Anthropic (Claude)",
+                    "Grok",
+                    "Qwen (Aliyun)",
+                    "Ollama (Local)",
                     "Custom"
                 ], {"default": "DeepSeek (Official)"}),
                 "model": (unique_models, {"default": "deepseek-chat"}),
@@ -235,14 +239,30 @@ class LiveSearchNode:
             if final_model == "deepseek-chat":
                 final_model = "deepseek-v3"
 
-        elif provider == "DeepSeek (Volcengine)":
-            base_url = "https://ark.cn-beijing.volces.com/api/v3"
-            # Volcengine uses Endpoint IDs (e.g. ep-2025...) as model names usually, 
-            # or mapped names if configured. The user needs to input the correct endpoint ID or model name.
+        elif provider == "Volcengine (Doubao)":
+            # Volcengine requires custom endpoint URL that user must provide in custom_base_url
+            # Format: https://ark.cn-beijing.volces.com/api/v3
+            # The model parameter is usually an endpoint ID (e.g. ep-20250101-xxxxx)
+            base_url = custom_base_url if custom_base_url.strip() else ""
+            if not base_url:
+                return ("❌ 火山引擎需要填写 custom_base_url（接入点地址），格式如: https://ark.cn-beijing.volces.com/api/v3", "", "")
             
         elif provider == "Gemini (OpenAI-Format)":
             base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
         
+        elif provider == "Anthropic (Claude)":
+            base_url = "https://api.anthropic.com/v1"
+        
+        elif provider == "Grok":
+            base_url = "https://api.x.ai/v1"
+        
+        elif provider == "Qwen (Aliyun)":
+            base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+        
+        elif provider == "Ollama (Local)":
+            base_url = "http://127.0.0.1:11434/v1"
+        
+        # Custom base_url override
         if custom_base_url.strip():
             base_url = custom_base_url.strip()
         

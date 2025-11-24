@@ -78,12 +78,6 @@ const API_LOADER_MODEL_CONFIGS = {
         "deepseek-v2.5",
         "deepseek-chat"
     ],
-    "DeepSeek (Volcengine)": [
-        "deepseek-v3.1",
-        "deepseek-r1",
-        "deepseek-v3",
-        "deepseek-chat"
-    ],
     "Gemini (OpenAI-Format)": [
         "gemini-3-pro",
         "gemini-2.5-pro",

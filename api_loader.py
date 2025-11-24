@@ -51,15 +51,6 @@ MODEL_CONFIGS = {
             "deepseek-chat"
         ]
     },
-    "DeepSeek (Volcengine)": {
-        "base_url": "https://ark.cn-beijing.volces.com/api/v3",
-        "models": [
-            "deepseek-v3.1",
-            "deepseek-r1",
-            "deepseek-v3",
-            "deepseek-chat"
-        ]
-    },
     "Gemini (OpenAI-Format)": {
         "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
         "models": [
@@ -90,12 +81,12 @@ MODEL_CONFIGS = {
         "models": [
             "grok-2-1212",
             "grok-2-vision-1212",
-            "grok-beta",
-            "grok-2"
+            "grok-2",
+            "grok-beta"
         ]
     },
     "Volcengine (Doubao)": {
-        "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+        "base_url": "",
         "models": [
             "doubao-1.5-pro-32k",
             "doubao-1.5-pro-256k",
