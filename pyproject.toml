@@ -11,8 +11,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/Louis-Kahn/ComfyUI-Live-Search"
-Documentation = "https://github.com/Louis-Kahn/ComfyUI-Live-Search#readme"
+Repository = "https://github.com/Zone-Lab/ComfyUI-Live-Search"
+Documentation = "https://github.com/Zone-Lab/ComfyUI-Live-Search#readme"
 
 [tool.comfy]
 PublisherId = ""  # TODO: 填入你在 Comfy Registry 上的 Publisher ID
