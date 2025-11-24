@@ -7,3 +7,4 @@ api_config.json
 .idea/
 venv/
 .specstory/
+.cursorindexingignore
