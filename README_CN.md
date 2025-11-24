@@ -10,7 +10,7 @@
 
 **🔥 热门场景**: 实时天气 · 新闻摘要 · 事实查询 · 产品评测 · 网页抓取
 
-**🤖 支持模型**: DeepSeek · 通义千问 · 豆包(火山引擎) · OpenAI · Gemini · Claude · Ollama
+**🤖 支持模型**: GPT-5.1 · DeepSeek-V3 · Gemini 3 Pro · Claude 4.5 · Qwen3 · Llama 4 · Ollama
 
 [中文文档](README_CN.md) | [English](README.md)
 
@@ -24,7 +24,7 @@
 
 ✅ **实时搜索**: DuckDuckGo 搜索引擎,稳定可靠  
 ✅ **智能总结**: AI 自动阅读网页并提取关键信息  
-✅ **多模型支持**: DeepSeek、通义千问、豆包、OpenAI、Gemini、Claude 等 8+ LLM  
+✅ **多模型支持**: GPT-5.1、DeepSeek-V3、Gemini 3 Pro、Claude 4.5、Qwen3 等 8+ LLM 提供商
 ✅ **模块化架构**: API配置、搜索设置、执行逻辑分离,灵活复用  
 ✅ **国内友好**: 完美支持国产大模型(通义千问/Qwen、豆包/Doubao、DeepSeek)
 
@@ -73,14 +73,15 @@
   - 支持代理配置，适配各种网络环境
   - 搜索质量完全满足实时信息检索需求
   
-- **🧠 多 LLM 提供商支持**：
-  - **OpenAI**: GPT-4o, GPT-4o-mini, GPT-4-turbo, o1-preview, o1-mini
-  - **DeepSeek**: 完美支持 DeepSeek-V3 和 DeepSeek-R1（官方 API / 阿里云百炼 / 火山引擎方舟）
-  - **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro, gemini-1.5-flash
-  - **Anthropic**: Claude 系列模型
-  - **火山引擎(豆包)**: doubao-1.5系列, deepseek-v3/r1, kimi-k2
-  - **通义千问**: qwen-max, qwen-plus, qwen-turbo
-  - **本地部署**: Ollama 支持
+- **🧠 多 LLM 提供商支持**（2025年底最新模型）：
+  - **OpenAI**: GPT-5.1, GPT-5系列, GPT-4.1系列, GPT-4o系列, O3系列推理模型
+  - **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner（支持官方/阿里云/火山引擎）
+  - **Gemini**: gemini-3-pro, gemini-2.5系列, gemini-2.0系列, gemini-1.5系列
+  - **Anthropic**: Claude 4.5 Sonnet/Haiku, Claude 4.1 Opus
+  - **火山引擎(豆包)**: doubao-1.5系列, deepseek-v3.1/r1, kimi-k2
+  - **通义千问**: qwen3-max, qwen-plus, qwen-flash（阿里云百炼）
+  - **Grok**: grok-2系列（xAI官方）
+  - **本地部署**: Ollama支持 llama4, qwen3, deepseek-v3, phi4等
 
 - **🎯 智能功能**：
   - **提示词优化**：可选开启 LLM 优化搜索关键词，提升搜索精准度
@@ -195,7 +196,7 @@ pip install -r requirements.txt
 | **optimize_prompt** | 🔄 提示词优化开关（推荐开启）<br>• **关闭**（默认）：直接使用原始输入搜索<br>• **开启**：LLM 将问题优化为更精准的搜索关键词<br>  - 保持原语言（中文→中文，英文→英文）<br>  - 去除冗余词汇，保留核心信息<br>  - 输出优化前后对比 |
 | **search_engine** | 🔍 **DuckDuckGo**（唯一选项）<br>• 稳定可靠，对自动化访问友好<br>• 无需额外配置即可工作<br>• 搜索质量完全满足需求 |
 | **provider** | 选择 LLM 提供商：支持 `OpenAI`, `DeepSeek (官方/阿里云/火山)`, `Gemini` 等。 |
-| **model** | 🎯 模型选择（下拉列表）<br>• **OpenAI**: gpt-4o, gpt-4o-mini, gpt-4-turbo, o1-preview 等<br>• **DeepSeek**: deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro 等<br>• 支持搜索过滤，快速找到所需模型 |
+| **model** | 🎯 模型选择（下拉列表）<br>• **OpenAI**: gpt-5.1, gpt-5, gpt-4.1, o3, o3-pro 等<br>• **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-3-pro, gemini-2.5-pro, gemini-2.5-flash 等<br>• **Claude**: claude-sonnet-4-5, claude-haiku-4-5 等<br>• 支持搜索过滤，快速找到所需模型 |
 | **api_key** | （可选）你的 API Key。留空则尝试读取配置文件。 |
 | **proxy** | （可选）代理地址，如 `http://127.0.0.1:7890`。留空则直连。 |
 
@@ -265,13 +266,13 @@ pip install -r requirements.txt
 1. **安装 Ollama**: 访问 https://ollama.com/ 下载安装
 2. **下载模型**: 
    ```bash
-   ollama pull qwen2.5      # 推荐: 通义千问2.5
-   ollama pull deepseek-r1  # 或者: DeepSeek R1
-   ollama pull llama3.3     # 或者: Llama 3.3
+   ollama pull llama4       # 推荐: Meta Llama 4 (2025最新)
+   ollama pull qwen3        # 或者: 阿里通义千问 Qwen3
+   ollama pull deepseek-v3  # 或者: DeepSeek V3
    ```
 3. **在节点中配置**:
    - Provider: `Ollama (Local)`
-   - Model: `qwen2.5` (或其他已下载的模型)
+   - Model: `llama4` (或其他已下载的模型: qwen3, deepseek-v3, phi4)
    - Base URL: `http://localhost:11434/v1`
    - API Key: 留空
 
@@ -279,7 +280,7 @@ pip install -r requirements.txt
 - ✅ 完全免费,无使用限制
 - ✅ 数据隐私,完全本地运行
 - ✅ 无网络延迟(除了搜索部分)
-- ✅ 支持 qwen2.5, llama3.3, deepseek-r1 等优秀模型
+- ✅ 支持 llama4, qwen3, deepseek-v3, phi4 等最新模型
 
 ### 备选方案: 超低价 API
 

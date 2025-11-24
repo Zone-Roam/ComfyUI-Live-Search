@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-live-search"
-description = "🌐 Live Search: Real-time web search and AI summarization. Internet search, web scraping, fact checking, weather, news. DuckDuckGo search with DeepSeek, OpenAI, Gemini, Claude, Grok, Qwen, Ollama. Modular architecture with API loader. 实时联网搜索、网页抓取、事实查询、天气新闻。支持DeepSeek、通义千问、豆包等国内模型。"
-version = "1.0.1"
+description = "🌐 Live Search: Real-time web search and AI summarization. Internet search, web scraping, fact checking, weather, news. DuckDuckGo search with GPT-5.1, DeepSeek-V3, Gemini 3 Pro, Claude 4.5, Qwen3, Llama 4, Ollama. Modular architecture with API loader. 实时联网搜索、网页抓取、事实查询、天气新闻。支持GPT-5.1、DeepSeek-V3、Gemini 3 Pro、Claude 4.5、通义千问Qwen3等最新模型。"
+version = "1.0.2"
 license = { file = "LICENSE" }
 dependencies = [
     "requests>=2.25.0",

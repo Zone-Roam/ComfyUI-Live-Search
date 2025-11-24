@@ -10,7 +10,7 @@
 
 **🔥 Use Cases**: Real-time Weather · News Summary · Fact Checking · Product Reviews · Web Scraping
 
-**🤖 Supported Models**: DeepSeek · Qwen · Doubao(Volcengine) · OpenAI · Gemini · Claude · Ollama
+**🤖 Supported Models**: GPT-5.1 · DeepSeek-V3 · Gemini 3 Pro · Claude 4.5 · Qwen3 · Llama 4 · Ollama
 
 [中文文档](README_CN.md) | [English](README.md)
 
@@ -24,7 +24,7 @@
 
 ✅ **Real-time Search**: DuckDuckGo search engine, stable and reliable  
 ✅ **AI Summarization**: Automatically reads web pages and extracts key information  
-✅ **Multi-LLM Support**: DeepSeek, Qwen, Doubao, OpenAI, Gemini, Claude, and 8+ more  
+✅ **Multi-LLM Support**: GPT-5.1, DeepSeek-V3, Gemini 3 Pro, Claude 4.5, Qwen3, and 8+ LLM providers  
 ✅ **Modular Architecture**: Separated API config, search settings, and execution logic  
 ✅ **Chinese-Friendly**: Perfect support for Chinese LLM providers (Qwen, Doubao, DeepSeek)
 
@@ -73,14 +73,15 @@
   - Proxy support for various network environments
   - High-quality search results for real-time information retrieval
   
-- **🧠 Multiple LLM Provider Support**:
-  - **OpenAI**: GPT-4o, GPT-4o-mini, GPT-4-turbo, o1-preview, o1-mini
-  - **DeepSeek**: Full support for DeepSeek-V3 and DeepSeek-R1 (Official API / Aliyun Bailian / Volcengine Ark)
-  - **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro, gemini-1.5-flash
-  - **Anthropic**: Claude series models
-  - **Volcengine (Doubao)**: doubao-1.5 series, deepseek-v3/r1, kimi-k2
-  - **Qwen (Aliyun)**: qwen-max, qwen-plus, qwen-turbo
-  - **Local Deployment**: Ollama support
+- **🧠 Multiple LLM Provider Support** (Latest 2025 Models):
+  - **OpenAI**: GPT-5.1, GPT-5 series, GPT-4.1 series, GPT-4o series, O3 series reasoning models
+  - **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner (Official/Aliyun/Volcengine)
+  - **Gemini**: gemini-3-pro, gemini-2.5 series, gemini-2.0 series, gemini-1.5 series
+  - **Anthropic**: Claude 4.5 Sonnet/Haiku, Claude 4.1 Opus
+  - **Volcengine (Doubao)**: doubao-1.5 series, deepseek-v3.1/r1, kimi-k2
+  - **Qwen (Aliyun)**: qwen3-max, qwen-plus, qwen-flash (Aliyun Bailian)
+  - **Grok**: grok-2 series (xAI Official)
+  - **Local Deployment**: Ollama supports llama4, qwen3, deepseek-v3, phi4, etc.
 
 - **🎯 Smart Features**:
   - **Prompt Optimization**: Optional LLM-powered search keyword refinement for better precision
@@ -194,7 +195,7 @@ Main search node, connects to the above two nodes.
 | **output_language** | 🌐 Output Language<br>• **Auto** (default): Automatically matches question language<br>• **中文**: Force Chinese output<br>• **English**: Force English output |
 | **optimize_prompt** | 🔄 Prompt Optimization Toggle (Recommended ON)<br>• **OFF** (default): Use original input directly<br>• **ON**: LLM optimizes your question into precise search keywords<br>  - Preserves original language (CN→CN, EN→EN)<br>  - Removes redundant words, keeps core info<br>  - Outputs before/after comparison |
 | **provider** | Choose your LLM provider: `OpenAI`, `DeepSeek (Official/Aliyun/Volcengine)`, `Gemini`, etc. |
-| **model** | 🎯 Model Selection (Dropdown)<br>• **OpenAI**: gpt-4o, gpt-4o-mini, gpt-4-turbo, o1-preview, etc.<br>• **DeepSeek**: deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro, etc.<br>• Supports search filtering for quick model lookup |
+| **model** | 🎯 Model Selection (Dropdown)<br>• **OpenAI**: gpt-5.1, gpt-5, gpt-4.1, o3, o3-pro, etc.<br>• **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-3-pro, gemini-2.5-pro, gemini-2.5-flash, etc.<br>• **Claude**: claude-sonnet-4-5, claude-haiku-4-5, etc.<br>• Supports search filtering for quick model lookup |
 | **api_key** | (Optional) Your API Key. If left empty, it tries to load from config files. |
 | **proxy** | (Optional) Proxy address like `http://127.0.0.1:7890`. Leave empty for direct connection. |
 
@@ -264,13 +265,13 @@ We chose DuckDuckGo to ensure the node works **reliably** across all environment
 1. **Install Ollama**: Visit https://ollama.com/ to download
 2. **Download Models**: 
    ```bash
-   ollama pull qwen2.5      # Recommended: Qwen 2.5
-   ollama pull deepseek-r1  # Or: DeepSeek R1
-   ollama pull llama3.3     # Or: Llama 3.3
+   ollama pull llama4       # Recommended: Meta Llama 4 (2025 Latest)
+   ollama pull qwen3        # Or: Alibaba Qwen3
+   ollama pull deepseek-v3  # Or: DeepSeek V3
    ```
 3. **Configure in Node**:
    - Provider: `Ollama (Local)`
-   - Model: `qwen2.5` (or other downloaded models)
+   - Model: `llama4` (or other downloaded models: qwen3, deepseek-v3, phi4)
    - Base URL: `http://localhost:11434/v1`
    - API Key: Leave empty
 
@@ -278,7 +279,7 @@ We chose DuckDuckGo to ensure the node works **reliably** across all environment
 - ✅ Completely free, no usage limits
 - ✅ Privacy-focused, runs entirely locally
 - ✅ No network latency (except search part)
-- ✅ Supports excellent models like qwen2.5, llama3.3, deepseek-r1
+- ✅ Supports latest models like llama4, qwen3, deepseek-v3, phi4
 
 ### Alternative: Ultra-Low-Cost APIs
 
