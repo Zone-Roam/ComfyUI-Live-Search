@@ -85,7 +85,7 @@ This project is inspired by the search capabilities of `comfyui_LLM_Polymath` an
 Navigate to your ComfyUI `custom_nodes` directory and run:
 
 ```bash
-git clone https://github.com/Zone-Lab/ComfyUI-Live-Search.git
+git clone https://github.com/Zone-Roam/ComfyUI-Live-Search.git
 cd ComfyUI-Live-Search
 
 # If using Portable version of ComfyUI (Recommended)

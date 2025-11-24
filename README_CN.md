@@ -85,7 +85,7 @@
 进入你的 ComfyUI `custom_nodes` 目录并运行：
 
 ```bash
-git clone https://github.com/Zone-Lab/ComfyUI-Live-Search.git
+git clone https://github.com/Zone-Roam/ComfyUI-Live-Search.git
 cd ComfyUI-Live-Search
 
 # 如果使用 Portable 版本的 ComfyUI（推荐）
