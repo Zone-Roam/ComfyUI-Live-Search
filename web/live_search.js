@@ -29,12 +29,14 @@ const LEGACY_MODEL_CONFIGS = {
         "kimi-k2"
     ],
     "Gemini (OpenAI-Format)": [
-        "gemini-2.0-flash-exp",
-        "gemini-exp-1206",
+        "gemini-3-pro",
+        "gemini-2.5-pro",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
         "gemini-1.5-pro",
-        "gemini-1.5-pro-002",
         "gemini-1.5-flash",
-        "gemini-1.5-flash-002",
         "gemini-1.5-flash-8b"
     ],
     "Custom": [
@@ -45,16 +47,26 @@ const LEGACY_MODEL_CONFIGS = {
 // Model configurations for API Loader (New Architecture)
 const API_LOADER_MODEL_CONFIGS = {
     "OpenAI": [
+        "gpt-5.1",
+        "gpt-5",
+        "gpt-5-mini",
+        "gpt-5-nano",
+        "gpt-5-pro",
+        "gpt-4.1",
+        "gpt-4.1-mini",
+        "gpt-4.1-nano",
         "gpt-4o",
-        "gpt-4o-2024-11-20",
         "gpt-4o-mini",
-        "gpt-4o-audio-preview",
         "gpt-4-turbo",
         "gpt-4",
         "gpt-3.5-turbo",
+        "o3",
+        "o3-pro",
+        "o3-mini",
+        "o3-deep-research",
+        "o4-mini-deep-research",
         "o1",
-        "o1-mini",
-        "o1-preview"
+        "o1-pro"
     ],
     "DeepSeek (Official)": [
         "deepseek-chat",
@@ -70,19 +82,23 @@ const API_LOADER_MODEL_CONFIGS = {
         "deepseek-v3"
     ],
     "Gemini (OpenAI-Format)": [
-        "gemini-2.0-flash-exp",
-        "gemini-exp-1206",
+        "gemini-3-pro",
+        "gemini-2.5-pro",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
         "gemini-1.5-pro",
-        "gemini-1.5-pro-002",
         "gemini-1.5-flash",
-        "gemini-1.5-flash-002",
         "gemini-1.5-flash-8b"
     ],
     "Anthropic (Claude)": [
-        "claude-3-7-sonnet-20250219",
-        "claude-3-5-sonnet-20241022",
-        "claude-3-5-haiku-20241022",
-        "claude-3-opus-20240229"
+        "claude-sonnet-4-5-20250929",
+        "claude-sonnet-4-5",
+        "claude-haiku-4-5-20251001",
+        "claude-haiku-4-5",
+        "claude-opus-4-1-20250805",
+        "claude-opus-4-1"
     ],
     "Grok": [
         "grok-2-1212",
