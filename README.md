@@ -104,6 +104,16 @@ Then restart ComfyUI.
 
 ## 🛠️ Usage Guide
 
+### 📸 Workflow Example
+
+The image below shows both usage methods:
+- **Left**: Legacy single-node mode - Simple and fast, all configs in one node
+- **Bottom right**: New modular architecture - API Loader + Settings + Agent, more flexible and reusable
+
+![Workflow Example](images/workflow_example.png)
+
+---
+
 ### Node: **🌐 Live Search Agent**
 
 #### Input Parameters

@@ -104,6 +104,16 @@ pip install -r requirements.txt
 
 ## 🛠️ 使用指南
 
+### 📸 工作流示例
+
+下图展示了两种使用方式：
+- **左侧**: Legacy单节点模式 - 简单快速,所有配置集中在一个节点
+- **右下方**: 新版模块化架构 - API Loader + Settings + Agent,更灵活可复用
+
+![工作流示例](images/workflow_example.png)
+
+---
+
 ### 方式一：新版模块化架构（推荐）⭐
 
 #### 1. **🔑 Live Search API Loader**
