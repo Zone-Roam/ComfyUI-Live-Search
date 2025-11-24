@@ -30,8 +30,11 @@ const LEGACY_MODEL_CONFIGS = {
     ],
     "Gemini (OpenAI-Format)": [
         "gemini-2.0-flash-exp",
+        "gemini-exp-1206",
         "gemini-1.5-pro",
+        "gemini-1.5-pro-002",
         "gemini-1.5-flash",
+        "gemini-1.5-flash-002",
         "gemini-1.5-flash-8b"
     ],
     "Custom": [
@@ -43,12 +46,15 @@ const LEGACY_MODEL_CONFIGS = {
 const API_LOADER_MODEL_CONFIGS = {
     "OpenAI": [
         "gpt-4o",
+        "gpt-4o-2024-11-20",
         "gpt-4o-mini",
+        "gpt-4o-audio-preview",
         "gpt-4-turbo",
         "gpt-4",
         "gpt-3.5-turbo",
-        "o1-preview",
-        "o1-mini"
+        "o1",
+        "o1-mini",
+        "o1-preview"
     ],
     "DeepSeek (Official)": [
         "deepseek-chat",
@@ -65,11 +71,15 @@ const API_LOADER_MODEL_CONFIGS = {
     ],
     "Gemini (OpenAI-Format)": [
         "gemini-2.0-flash-exp",
+        "gemini-exp-1206",
         "gemini-1.5-pro",
+        "gemini-1.5-pro-002",
         "gemini-1.5-flash",
+        "gemini-1.5-flash-002",
         "gemini-1.5-flash-8b"
     ],
     "Anthropic (Claude)": [
+        "claude-3-7-sonnet-20250219",
         "claude-3-5-sonnet-20241022",
         "claude-3-5-haiku-20241022",
         "claude-3-opus-20240229"
