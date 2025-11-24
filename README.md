@@ -22,6 +22,36 @@ It combines the robustness of **DuckDuckGo/Google Search** with the intelligence
 
 This project is inspired by the search capabilities of `comfyui_LLM_Polymath` and the user-friendly design of `ComfyUI-TutuBanana`.
 
+## 🏗️ New Modular Architecture
+
+**Inspired by [comfyui_LLM_party](https://github.com/heshengtao/comfyui_LLM_party)'s excellent design**, we adopt a **modular layered architecture**:
+
+### 📊 Node Composition
+
+```
+🔑 API Loader → ⚙️ Settings → 🌐 Search Agent → Results
+```
+
+| Node | Function | Output |
+|------|----------|--------|
+| **🔑 Live Search API Loader** | API config & model selection | LLM_CONFIG |
+| **⚙️ Live Search Settings** | Search parameters | SEARCH_SETTINGS |
+| **🌐 Live Search Agent** | Main search logic | answer, source_urls, optimized_prompt |
+
+### ✅ New Architecture Benefits
+
+- **Modular Design**: Separation of config and logic, easier to maintain
+- **Reusability**: One API Loader can connect to multiple Agents
+- **Flexibility**: Different Settings for different scenarios
+- **Professional**: Best practices from large-scale projects
+
+### 🔄 Backward Compatibility
+
+- Legacy single-node `🌐 Live Search (Legacy)` still available
+- New users recommended to use the new three-node combo
+
+---
+
 ## ✨ Key Features
 
 - **🔍 Dual Search Engines**: 
