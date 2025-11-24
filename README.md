@@ -83,6 +83,7 @@ Then restart ComfyUI.
 | Parameter | Description |
 | :--- | :--- |
 | **prompt** | Your question. Supports both Chinese and English. e.g., *"北京现在的天气"* or *"Who won the Super Bowl?"* |
+| **output_language** | 🌐 Output Language<br>• **Auto (跟随输入)** (default): Automatically matches question language<br>• **中文**: Force Chinese output<br>• **English**: Force English output |
 | **optimize_prompt** | 🔄 Prompt Optimization Toggle (Recommended ON)<br>• **OFF** (default): Use original input directly<br>• **ON**: LLM optimizes your question into precise search keywords<br>  - Preserves original language (CN→CN, EN→EN)<br>  - Removes redundant words, keeps core info<br>  - Outputs before/after comparison |
 | **search_engine** | 🔍 **DuckDuckGo** (Only Option)<br>• Stable and automation-friendly<br>• Works reliably with proxies<br>• High-quality search results |
 | **provider** | Choose your LLM provider: `OpenAI`, `DeepSeek (Official/Aliyun/Volcengine)`, `Gemini`, etc. |
@@ -112,11 +113,16 @@ Then restart ComfyUI.
 - **Optimize**: `ON` ✅
 - **Output**: Accurate answer based on real-time results
 
-**3. Chinese Query**
-- **Input**: `"北京现在的天气"`
+**3. Cross-Language Query**
+- **Input**: `"北京现在的天气"` (Chinese question)
+- **Output Language**: `English` 🇺🇸
 - **Optimize**: `ON` ✅
-- **Optimized**: `"北京 实时天气 当前时间"`
-- **Output**: Beijing real-time weather info (in Chinese)
+- **Output**: Beijing weather info (**answered in English**)
+
+**4. International Collaboration**
+- **Input**: `"What's the weather in Tokyo?"` (English question)
+- **Output Language**: `中文` 🇨🇳
+- **Output**: Tokyo weather info (**answered in Chinese**)
 
 ## 🔍 Why Only DuckDuckGo?
 

@@ -127,6 +127,7 @@ class LiveSearchNode:
         return {
             "required": {
                 "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., 北京现在的天气 / What is the weather in Tokyo?"}),
+                "output_language": (["Auto (跟随输入)", "中文", "English"], {"default": "Auto (跟随输入)"}),
                 "optimize_prompt": ("BOOLEAN", {"default": False, "label_on": "Optimize ON", "label_off": "Optimize OFF"}),
                 "provider": ([
                     "OpenAI", 
@@ -151,7 +152,7 @@ class LiveSearchNode:
     FUNCTION = "process_search"
     CATEGORY = "LiveSearch"
 
-    def process_search(self, prompt, optimize_prompt, provider, model, num_results, api_key, custom_base_url, proxy):
+    def process_search(self, prompt, output_language, optimize_prompt, provider, model, num_results, api_key, custom_base_url, proxy):
         # 1. Resolve Proxy
         valid_proxy = proxy.strip() if proxy and proxy.strip() else None
         
@@ -247,9 +248,18 @@ Examples:
         full_context = "\n".join(context_data)
 
         # 5. Generate Answer
-        system_prompt = """You are a helpful assistant with access to real-time web search results. 
+        # Determine output language instruction
+        language_instruction = ""
+        if output_language == "中文":
+            language_instruction = "You MUST answer in Chinese (简体中文)."
+        elif output_language == "English":
+            language_instruction = "You MUST answer in English."
+        else:  # Auto (跟随输入)
+            language_instruction = "Answer in the SAME LANGUAGE as the user's question."
+        
+        system_prompt = f"""You are a helpful assistant with access to real-time web search results. 
 Rules:
-1. Answer in the SAME LANGUAGE as the user's question
+1. {language_instruction}
 2. Base your answer ONLY on the provided search results
 3. If results contain time/weather info, be precise with numbers and units
 4. Keep the answer concise and well-structured"""

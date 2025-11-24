@@ -83,6 +83,7 @@ pip install -r requirements.txt
 | 参数名 | 说明 |
 | :--- | :--- |
 | **prompt** | 你的问题。支持中英文。例如 *"北京现在的天气"* 或 *"Who won the Super Bowl?"* |
+| **output_language** | 🌐 输出语言<br>• **Auto (跟随输入)**（默认）：根据问题语言自动判断<br>• **中文**：强制使用中文回答<br>• **English**：强制使用英文回答 |
 | **optimize_prompt** | 🔄 提示词优化开关（推荐开启）<br>• **关闭**（默认）：直接使用原始输入搜索<br>• **开启**：LLM 将问题优化为更精准的搜索关键词<br>  - 保持原语言（中文→中文，英文→英文）<br>  - 去除冗余词汇，保留核心信息<br>  - 输出优化前后对比 |
 | **search_engine** | 🔍 **DuckDuckGo**（唯一选项）<br>• 稳定可靠，对自动化访问友好<br>• 无需额外配置即可工作<br>• 搜索质量完全满足需求 |
 | **provider** | 选择 LLM 提供商：支持 `OpenAI`, `DeepSeek (官方/阿里云/火山)`, `Gemini` 等。 |
@@ -112,11 +113,16 @@ pip install -r requirements.txt
 - **优化开关**: `开启` ✅
 - **输出**: 基于实时搜索结果的准确回答
 
-**3. 英文查询**
-- **输入**: `"What's the weather in Tokyo?"`
+**3. 跨语言查询**
+- **输入**: `"What's the weather in Tokyo?"` (英文问题)
+- **输出语言**: `中文` 🇨🇳
 - **优化开关**: `开启` ✅
-- **优化结果**: `"Tokyo weather now"`
-- **输出**: 东京实时天气信息（英文回答）
+- **输出**: 东京实时天气信息（**用中文回答**）
+
+**4. 国际协作场景**
+- **输入**: `"北京现在的天气"` (中文问题)
+- **输出语言**: `English` 🇺🇸
+- **输出**: Beijing weather info (**answered in English**)
 
 ## 🔍 为什么只支持 DuckDuckGo？
 
