@@ -88,19 +88,19 @@ MODEL_CONFIGS = {
     "Volcengine (Doubao)": {
         "base_url": "https://ark.cn-beijing.volces.com/api/v3",
         "models": [
-            # 推荐模型 - 文本生成
-            "doubao-seed-1.6",
-            "doubao-seed-1.6-lite",
-            "doubao-seed-1.6-flash",
-            "doubao-seed-1.6-thinking",
-            "doubao-seed-code",
-            "doubao-seed-translation",
-            "doubao-seed-1.6-vision",
-            # 第三方推荐模型
-            "deepseek-v3.1",
-            "deepseek-r1",
-            "deepseek-v3",
-            "kimi-k2"
+            # 豆包主力模型 (Model ID)
+            "doubao-seed-1-6-251015",      # doubao-seed-1.6 (最新)
+            "doubao-seed-1-6-250615",      # doubao-seed-1.6 (稳定)
+            "doubao-seed-1-6-lite-251015", # doubao-seed-1.6-lite
+            "doubao-seed-1-6-flash-250828",# doubao-seed-1.6-flash
+            "doubao-seed-1-6-thinking-250715", # doubao-seed-1.6-thinking
+            "doubao-seed-code-preview-251028", # doubao-seed-code
+            "doubao-seed-1-6-vision-250815",   # doubao-seed-1.6-vision
+            # DeepSeek (火山引擎托管)
+            "deepseek-v3-1-terminus",
+            "deepseek-v3-1-250821",
+            # 第三方兼容 (如需自定义)
+            "custom-endpoint-id"
         ]
     },
     "Qwen (Aliyun)": {

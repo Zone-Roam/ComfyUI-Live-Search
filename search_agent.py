@@ -5,13 +5,39 @@ Works with API Loader and Settings nodes for modular design
 """
 
 import requests
+import re
 from bs4 import BeautifulSoup
 try:
     from ddgs import DDGS
 except ImportError:
     from duckduckgo_search import DDGS
+try:
+    from geopy.geocoders import Nominatim
+    from geopy.exc import GeocoderTimedOut, GeocoderServiceError
+    GEOPY_AVAILABLE = True
+except ImportError:
+    GEOPY_AVAILABLE = False
+    print("[LiveSearch] Warning: geopy not available, coordinate reverse geocoding disabled")
 
 class SearchTool:
+    # Professional weather/time websites that we trust
+    TRUSTED_DOMAINS = [
+        'timeanddate.com',
+        'accuweather.com',
+        'weather.com',
+        'wunderground.com',
+        'openweathermap.org',
+        'worldweatheronline.com',
+        'weather-atlas.com',
+        'weathertoday.live',
+        'easeweather.com'
+    ]
+    
+    @staticmethod
+    def is_trusted_url(url):
+        """Check if URL is from a trusted weather/time domain"""
+        return any(domain in url.lower() for domain in SearchTool.TRUSTED_DOMAINS)
+    
     @staticmethod
     def search_duckduckgo(query, num_results=3, proxy=None):
         """
@@ -32,15 +58,28 @@ class SearchTool:
                     # Some versions of ddgs support backend='html', others don't via .text()
                     # We'll just rely on the default for now, but print warning.
             
-            # Normalize keys to match Google
+            # Normalize keys and prioritize trusted domains
             normalized_results = []
+            trusted_results = []
+            other_results = []
+            
             for res in results:
-                normalized_results.append({
+                url = res.get('href', '')
+                result_item = {
                     'title': res.get('title', ''),
-                    'url': res.get('href', ''),
+                    'url': url,
                     'summary': res.get('body', '')
-                })
-            return normalized_results
+                }
+                
+                # Prioritize trusted weather/time websites
+                if SearchTool.is_trusted_url(url):
+                    trusted_results.append(result_item)
+                else:
+                    other_results.append(result_item)
+            
+            # Return trusted results first, then others
+            normalized_results = trusted_results + other_results
+            return normalized_results[:num_results]
         except Exception as e:
             print(f"[LiveSearch] DuckDuckGo Search error: {e}")
             return []
@@ -49,6 +88,7 @@ class SearchTool:
     def fetch_url_content(url, timeout=10, proxy=None):
         """
         Fetches and extracts text content from a URL.
+        For timeanddate.com, extract key information more precisely.
         """
         try:
             headers = {
@@ -60,6 +100,44 @@ class SearchTool:
             
             soup = BeautifulSoup(response.content, 'html.parser')
             
+            # Special handling for timeanddate.com - extract key information
+            if 'timeanddate.com' in url:
+                # Try to extract time and weather info more precisely
+                time_info = []
+                weather_info = []
+                
+                # Look for time display (usually in specific divs/classes)
+                time_elements = soup.find_all(['div', 'span'], class_=lambda x: x and ('time' in x.lower() or 'clock' in x.lower() or 'cst' in x.lower() or 'utc' in x.lower()))
+                for elem in time_elements[:5]:  # Limit to first 5 matches
+                    text = elem.get_text(strip=True)
+                    if text and len(text) < 100:  # Time strings are usually short
+                        time_info.append(text)
+                
+                # Look for weather info
+                weather_elements = soup.find_all(['div', 'span'], class_=lambda x: x and ('weather' in x.lower() or 'temp' in x.lower() or '°f' in x.lower() or '°c' in x.lower()))
+                for elem in weather_elements[:5]:
+                    text = elem.get_text(strip=True)
+                    if text and ('°' in text or 'weather' in text.lower() or 'forecast' in text.lower()):
+                        weather_info.append(text)
+                
+                # Also get main content
+                main_content = soup.find('main') or soup.find('div', class_=lambda x: x and 'content' in str(x).lower())
+                if main_content:
+                    main_text = main_content.get_text(separator='\n', strip=True)
+                else:
+                    main_text = soup.get_text(separator='\n', strip=True)
+                
+                # Combine: prioritize time and weather info
+                combined = []
+                if time_info:
+                    combined.append(f"Time Information: {' | '.join(time_info[:3])}")
+                if weather_info:
+                    combined.append(f"Weather Information: {' | '.join(weather_info[:3])}")
+                combined.append(f"Main Content: {main_text[:3000]}")
+                
+                return '\n'.join(combined)
+            
+            # For other sites, use standard extraction
             # Remove script and style elements
             for script in soup(["script", "style", "header", "footer", "nav"]):
                 script.extract()
@@ -94,30 +172,59 @@ class LLMClient:
         max_tokens = llm_config.get("max_tokens", 2048)
         timeout = llm_config.get("timeout", 120)
         proxy = llm_config.get("proxy", None)
+        provider = llm_config.get("provider", "")
         
         if not api_key:
             return "Error: API Key is missing."
             
         url = f"{base_url.rstrip('/')}/chat/completions"
+        
+        # Standard headers
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
         
+        # Volcengine specific adjustment: ensure no extra headers interfere, strictly follow OpenAI format
+        if "Volcengine" in provider:
+            # Volcengine (Ark) supports standard OpenAI format with Bearer token
+            # Just ensuring stream is False is the key
+            pass
+        
         payload = {
             "model": model,
             "messages": messages,
             "temperature": temperature,
-            "max_tokens": max_tokens
+            "max_tokens": max_tokens,
+            "stream": False # Explicitly disable stream as requested
         }
         
+        # Remove max_tokens for o1 models as they don't support it
+        if model.startswith("o1-"):
+            payload.pop("max_tokens", None)
+            payload.pop("temperature", None) # o1 often has fixed temp
+            
         proxies = {"http": proxy, "https": proxy} if proxy else None
         
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=timeout, proxies=proxies)
+            
+            # Better error handling for non-200 responses
+            if response.status_code != 200:
+                try:
+                    error_json = response.json()
+                    return f"Error calling LLM: HTTP {response.status_code} - {error_json}"
+                except:
+                    return f"Error calling LLM: HTTP {response.status_code} - {response.text}"
+                    
             response.raise_for_status()
             data = response.json()
-            return data['choices'][0]['message']['content']
+            
+            if 'choices' in data and len(data['choices']) > 0:
+                return data['choices'][0]['message']['content']
+            else:
+                return f"Error: Unexpected response format from LLM provider. Response: {data}"
+                
         except Exception as e:
             return f"Error calling LLM: {str(e)}"
 
@@ -160,28 +267,81 @@ class LiveSearch_Agent:
         search_query = prompt
         optimized_prompt_output = "No optimization (using original prompt)"
         
+        # Extract coordinates from prompt and convert to location name
+        location_name = None
+        city_name = None  # Simplified city name for search
+        coordinate_pattern = r'(-?\d+\.?\d*)\s*[,，]\s*(-?\d+\.?\d*)'
+        coord_match = re.search(coordinate_pattern, prompt)
+        
+        print(f"[LiveSearch] GEOPY_AVAILABLE: {GEOPY_AVAILABLE}, coord_match: {coord_match is not None}")
+        
+        if coord_match and GEOPY_AVAILABLE:
+            try:
+                lat, lon = float(coord_match.group(1)), float(coord_match.group(2))
+                print(f"[LiveSearch] Detected coordinates: {lat}, {lon}, attempting reverse geocoding...")
+                
+                geolocator = Nominatim(user_agent="comfyui_live_search")
+                location = geolocator.reverse((lat, lon), timeout=10, language='en')
+                
+                if location:
+                    # Extract city/country from address
+                    address = location.raw.get('address', {})
+                    city = address.get('city') or address.get('town') or address.get('village') or address.get('county')
+                    state = address.get('state', '') or address.get('state_district', '')
+                    country = address.get('country', '')
+                    location_name = f"{city}, {country}" if city else country
+                    # Extract city and district for more precise search queries
+                    city_name = city or state or address.get('region', '')
+                    # Also extract district/suburb if available (for Beijing Haidian case)
+                    district = address.get('suburb', '') or address.get('district', '')
+                    if district and city_name:
+                        # Store both city and district for "timeanddate Beijing Haidian" format
+                        city_name = f"{city_name} {district}"
+                    print(f"[LiveSearch] Reverse geocoded to: {location_name} (city: {city_name})")
+            except (GeocoderTimedOut, GeocoderServiceError, Exception) as e:
+                print(f"[LiveSearch] Reverse geocoding failed: {e}, will rely on LLM optimization")
+        
         # Apply prompt optimization if enabled
         if optimize_prompt:
+            # If we have city name from geopy, inject simplified location info
+            optimization_prompt = prompt
+            if city_name:
+                # Use just city name for cleaner search queries
+                optimization_prompt = f"{prompt} (Location: {city_name})"
+            elif location_name:
+                optimization_prompt = f"{prompt} (Location: {location_name})"
+            
             refine_messages = [
-                {"role": "system", "content": """You are a search engine expert. Convert the user's input into the best search query.
-Rules:
-1. Keep the same language as the input (Chinese→Chinese, English→English)
-2. Remove unnecessary words, keep key information
-3. For weather/time queries, preserve location and time context
-4. Return ONLY the optimized query, no quotes or explanations
+                {"role": "system", "content": """You are a Search Query Generator Tool.
+Your ONLY task is to extract key terms to form a search query for a search engine (like DuckDuckGo).
+
+CRITICAL RULES:
+1. DO NOT answer the user's question.
+2. DO NOT generate any data, facts, time, or weather info.
+3. Output ONLY the raw search keywords string. No quotes, no prefixes.
+4. If location name is provided in parentheses, use ONLY the city/district name (keep it simple).
+5. Keep search queries SHORT - 2-3 words maximum.
+6. For weather queries: use "city weather" (e.g., "Beijing weather" or "Haidian weather")
+7. For time queries: use "city time" (e.g., "Beijing time" or "Haidian time")
+8. For combined weather+time queries: ALWAYS use "timeanddate city district" format if district is provided
+   (e.g., "timeanddate Beijing Haidian" or "timeanddate New York Manhattan")
+   If only city is provided, use "timeanddate city" (e.g., "timeanddate Beijing")
+   This ensures we find timeanddate.com which provides both weather and time information.
 
 Examples:
-- "北京现在的天气和时间" → "北京 实时天气 当前时间"
-- "What's the weather in Beijing?" → "Beijing weather now"
-- "外面冷吗" → "当地天气 温度"
-- "Who won the Super Bowl?" → "Super Bowl winner latest"
-"""},
-                {"role": "user", "content": prompt}
+Input: "What is the weather in Beijing?" -> Output: Beijing weather
+Input: "What time is it in New York?" -> Output: New York time
+Input: "coordinates 40.7128, -74.0060 weather time (Location: New York)" -> Output: timeanddate New York
+Input: "Haidian District China current weather time (Location: Beijing Haidian)" -> Output: timeanddate Beijing Haidian
+Input: "Who won the Super Bowl 2024" -> Output: Super Bowl 2024 winner"""},
+                {"role": "user", "content": optimization_prompt}
             ]
             refined_query = LLMClient.chat_completion(llm_config_with_proxy, refine_messages)
             if not refined_query.startswith("Error"):
                 print(f"[LiveSearch] Prompt optimized: {prompt} -> {refined_query}")
                 optimized_prompt_output = f"Original: {prompt}\nOptimized: {refined_query}"
+                if location_name:
+                    optimized_prompt_output += f"\nLocation resolved: {location_name}"
                 search_query = refined_query
             else:
                 optimized_prompt_output = f"Optimization failed: {refined_query}"
@@ -194,22 +354,56 @@ Examples:
         if not search_results:
             return (f"No search results found using DuckDuckGo.", "", optimized_prompt_output)
 
-        # 3. Extract Content
+        # 3. Extract Content (prioritize trusted domains and specific pages)
         context_data = []
         source_urls = []
         
-        for res in search_results:
-            url = res['url']
-            title = res['title']
-            summary = res['summary']
+        # Sort results: trusted domains first, and prioritize specific pages over homepages
+        def sort_key(res):
+            url = res.get('url', '')
+            is_trusted = SearchTool.is_trusted_url(url)
+            is_homepage = url.endswith('/') or url.count('/') <= 3  # Homepage has few slashes
+            # Trusted + specific page = highest priority (0)
+            # Trusted + homepage = medium priority (1)
+            # Untrusted = lowest priority (2)
+            if is_trusted and not is_homepage:
+                return 0
+            elif is_trusted:
+                return 1
+            else:
+                return 2
+        
+        sorted_results = sorted(search_results, key=sort_key)
+        
+        for res in sorted_results:
+            url = res.get('url', '')
+            title = res.get('title', '')
+            summary = res.get('summary', '')
+            
+            # Skip empty or invalid URLs
+            if not url or not url.startswith(('http://', 'https://')):
+                continue
+            
+            # Skip timeanddate.com homepage - we want specific location pages
+            if url == 'https://www.timeanddate.com/' or url == 'https://www.timeanddate.com':
+                print(f"[LiveSearch] Skipping timeanddate.com homepage, looking for specific page")
+                continue
             
             print(f"[LiveSearch] Fetching: {url}")
             content = SearchTool.fetch_url_content(url, proxy=valid_proxy)
             
             if content:
-                snippet = content[:2000] if content else summary
+                # For timeanddate.com, use more content since we extract it more precisely
+                snippet_length = 3000 if 'timeanddate.com' in url else 2000
+                snippet = content[:snippet_length] if content else summary
                 context_data.append(f"Source: {title} ({url})\nSummary: {summary}\nContent: {snippet}\n---")
                 source_urls.append(url)
+                
+                # If we have enough trusted sources with actual content, we can stop early
+                trusted_with_content = [s for s in source_urls if SearchTool.is_trusted_url(s) and s not in ['https://www.timeanddate.com/', 'https://www.timeanddate.com']]
+                if len(trusted_with_content) >= 2:
+                    print("[LiveSearch] Found enough trusted sources with content, stopping early")
+                    break
         
         full_context = "\n".join(context_data)
 
@@ -227,8 +421,14 @@ Examples:
 Rules:
 1. {language_instruction}
 2. Base your answer ONLY on the provided search results
-3. If results contain time/weather info, be precise with numbers and units
-4. Keep the answer concise and well-structured"""
+3. Prioritize information from professional weather/time websites (timeanddate.com, accuweather.com, openweathermap.org, weather.com, wunderground.com)
+4. If you see timeanddate.com results, extract the EXACT time and weather data from the content:
+   - Look for time patterns like "12:31:03 am CST", "Tuesday, November 25, 2025", "UTC+8", "CST (China Standard Time)"
+   - Look for weather patterns like "36 °F", "Chilly", "47 / 29 °F", "Partly cloudy", temperature forecasts, weather descriptions
+   - Extract ALL numerical values (temperatures, times, dates) exactly as shown in the content
+5. If results contain time/weather info, be precise with numbers and units - include the exact values you see
+6. If search results don't contain real-time data, clearly state that and suggest using a dedicated weather service
+7. Keep the answer concise and well-structured, but include all relevant time and weather details"""
 
         final_messages = [
             {"role": "system", "content": system_prompt},
