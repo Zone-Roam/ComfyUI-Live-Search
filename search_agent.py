@@ -134,7 +134,7 @@ class LiveSearch_Agent:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., 北京现在的天气 / What is the weather in Tokyo?"}),
+                "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., 北京现在的天气 / What is the weather in Beijing?"}),
                 "llm_config": ("LLM_CONFIG",),
                 "search_settings": ("SEARCH_SETTINGS",),
             }
@@ -172,7 +172,7 @@ Rules:
 
 Examples:
 - "北京现在的天气和时间" → "北京 实时天气 当前时间"
-- "What's the weather in Tokyo?" → "Tokyo weather now"
+- "What's the weather in Beijing?" → "Beijing weather now"
 - "外面冷吗" → "当地天气 温度"
 - "Who won the Super Bowl?" → "Super Bowl winner latest"
 """},

@@ -172,7 +172,7 @@ class LiveSearchNode:
         
         return {
             "required": {
-                "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., 北京现在的天气 / What is the weather in Tokyo?"}),
+                "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., 北京现在的天气 / What is the weather in Beijing?"}),
                 "output_language": (["Auto (跟随输入)", "中文", "English"], {"default": "Auto (跟随输入)"}),
                 "optimize_prompt": ("BOOLEAN", {"default": False, "label_on": "Optimize ON", "label_off": "Optimize OFF"}),
                 "provider": ([
@@ -252,7 +252,7 @@ Rules:
 
 Examples:
 - "北京现在的天气和时间" → "北京 实时天气 当前时间"
-- "What's the weather in Tokyo?" → "Tokyo weather now"
+- "What's the weather in Beijing?" → "Beijing weather now"
 - "外面冷吗" → "当地天气 温度"
 - "Who won the Super Bowl?" → "Super Bowl winner latest"
 """},
