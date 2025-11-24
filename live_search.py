@@ -23,7 +23,8 @@ MODEL_CONFIGS = {
     ],
     "DeepSeek (Official)": [
         "deepseek-chat",
-        "deepseek-reasoner"
+        "deepseek-reasoner",
+        "deepseek-v3"
     ],
     "DeepSeek (Aliyun)": [
         "deepseek-v3",
@@ -32,11 +33,15 @@ MODEL_CONFIGS = {
     ],
     "Volcengine (Doubao)": [
         "doubao-1.5-pro-32k",
+        "doubao-1.5-pro-256k",
         "doubao-1.5-lite",
+        "doubao-1.5-vision-pro",
+        "doubao-1.5-thinking-pro",
         "doubao-pro-32k",
         "doubao-lite-32k",
-        "deepseek-v3",
+        "deepseek-v3.1",
         "deepseek-r1",
+        "deepseek-v3",
         "kimi-k2"
     ],
     "Gemini (OpenAI-Format)": [

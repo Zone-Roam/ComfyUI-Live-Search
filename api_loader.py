@@ -39,7 +39,8 @@ MODEL_CONFIGS = {
         "base_url": "https://api.deepseek.com",
         "models": [
             "deepseek-chat",
-            "deepseek-reasoner"
+            "deepseek-reasoner",
+            "deepseek-v3"
         ]
     },
     "DeepSeek (Aliyun)": {
@@ -53,8 +54,10 @@ MODEL_CONFIGS = {
     "DeepSeek (Volcengine)": {
         "base_url": "https://ark.cn-beijing.volces.com/api/v3",
         "models": [
-            "deepseek-chat",
-            "deepseek-v3"
+            "deepseek-v3.1",
+            "deepseek-r1",
+            "deepseek-v3",
+            "deepseek-chat"
         ]
     },
     "Gemini (OpenAI-Format)": {
@@ -87,7 +90,8 @@ MODEL_CONFIGS = {
         "models": [
             "grok-2-1212",
             "grok-2-vision-1212",
-            "grok-beta"
+            "grok-beta",
+            "grok-2"
         ]
     },
     "Volcengine (Doubao)": {
@@ -109,18 +113,25 @@ MODEL_CONFIGS = {
     "Qwen (Aliyun)": {
         "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "models": [
-            "qwen-max",
+            "qwen3-max",
+            "qwen3-max-preview",
             "qwen-plus",
+            "qwen-plus-latest",
+            "qwen-flash",
+            "qwen-max",
             "qwen-turbo"
         ]
     },
     "Ollama (Local)": {
         "base_url": "http://127.0.0.1:11434/v1",
         "models": [
+            "llama4",
             "llama3.3",
             "llama3.2",
+            "qwen3",
             "qwen2.5",
             "deepseek-r1",
+            "deepseek-v3",
             "phi4"
         ]
     },

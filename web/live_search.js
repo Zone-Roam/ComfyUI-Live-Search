@@ -70,7 +70,8 @@ const API_LOADER_MODEL_CONFIGS = {
     ],
     "DeepSeek (Official)": [
         "deepseek-chat",
-        "deepseek-reasoner"
+        "deepseek-reasoner",
+        "deepseek-v3"
     ],
     "DeepSeek (Aliyun)": [
         "deepseek-v3",
@@ -78,8 +79,10 @@ const API_LOADER_MODEL_CONFIGS = {
         "deepseek-chat"
     ],
     "DeepSeek (Volcengine)": [
-        "deepseek-chat",
-        "deepseek-v3"
+        "deepseek-v3.1",
+        "deepseek-r1",
+        "deepseek-v3",
+        "deepseek-chat"
     ],
     "Gemini (OpenAI-Format)": [
         "gemini-3-pro",
@@ -103,6 +106,7 @@ const API_LOADER_MODEL_CONFIGS = {
     "Grok": [
         "grok-2-1212",
         "grok-2-vision-1212",
+        "grok-2",
         "grok-beta"
     ],
     "Volcengine (Doubao)": [
@@ -119,15 +123,22 @@ const API_LOADER_MODEL_CONFIGS = {
         "kimi-k2"
     ],
     "Qwen (Aliyun)": [
-        "qwen-max",
+        "qwen3-max",
+        "qwen3-max-preview",
         "qwen-plus",
+        "qwen-plus-latest",
+        "qwen-flash",
+        "qwen-max",
         "qwen-turbo"
     ],
     "Ollama (Local)": [
+        "llama4",
         "llama3.3",
         "llama3.2",
+        "qwen3",
         "qwen2.5",
         "deepseek-r1",
+        "deepseek-v3",
         "phi4"
     ],
     "Custom": [
