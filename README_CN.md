@@ -264,13 +264,6 @@ DEEPSEEK_OFFICIAL_API_KEY=sk-your-deepseek-key-here
 
 > **注意**：在云端平台使用时，请务必直接在节点输入框填写 Key，以保证安全。
 
-## 🧩 致谢
-
-- **搜索逻辑**：参考了 `googlesearch-python` 和 `duckduckgo_search` 库。
-- **灵感来源**：
-  - `comfyui_LLM_Polymath`：提供了 RAG 和搜索的思路。
-  - `ComfyUI-TutuBanana`：提供了优秀的项目结构和用户体验设计理念。
-
 ## 📄 许可证
 
 Apache 2.0 License

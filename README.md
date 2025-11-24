@@ -217,13 +217,6 @@ Node Input (Highest) > .env File > api_config.json (Lowest)
 
 > **Note**: On cloud platforms, always use the `api_key` widget in the node for security.
 
-## 🧩 Credits
-
-- **Search Logic**: Adapted from `googlesearch-python` and `duckduckgo_search`.
-- **Inspiration**: 
-  - `comfyui_LLM_Polymath` for RAG concepts.
-  - `ComfyUI-TutuBanana` for project structure and UI/UX philosophy.
-
 ## 📄 License
 
 Apache 2.0 License
