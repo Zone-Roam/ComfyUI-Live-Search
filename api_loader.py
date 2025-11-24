@@ -86,7 +86,7 @@ MODEL_CONFIGS = {
         ]
     },
     "Volcengine (Doubao)": {
-        "base_url": "",
+        "base_url": "https://ark.cn-beijing.volces.com/api/v3",
         "models": [
             "doubao-1.5-pro-32k",
             "doubao-1.5-pro-256k",
@@ -98,7 +98,8 @@ MODEL_CONFIGS = {
             "deepseek-v3.1",
             "deepseek-r1",
             "deepseek-v3",
-            "kimi-k2"
+            "kimi-k2",
+            "custom-endpoint-id"
         ]
     },
     "Qwen (Aliyun)": {

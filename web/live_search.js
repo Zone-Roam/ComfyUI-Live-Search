@@ -114,7 +114,8 @@ const API_LOADER_MODEL_CONFIGS = {
         "deepseek-v3.1",
         "deepseek-r1",
         "deepseek-v3",
-        "kimi-k2"
+        "kimi-k2",
+        "custom-endpoint-id"
     ],
     "Qwen (Aliyun)": [
         "qwen3-max",

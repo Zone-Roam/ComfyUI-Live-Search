@@ -240,12 +240,10 @@ class LiveSearchNode:
                 final_model = "deepseek-v3"
 
         elif provider == "Volcengine (Doubao)":
-            # Volcengine requires custom endpoint URL that user must provide in custom_base_url
-            # Format: https://ark.cn-beijing.volces.com/api/v3
-            # The model parameter is usually an endpoint ID (e.g. ep-20250101-xxxxx)
-            base_url = custom_base_url if custom_base_url.strip() else ""
-            if not base_url:
-                return ("❌ 火山引擎需要填写 custom_base_url（接入点地址），格式如: https://ark.cn-beijing.volces.com/api/v3", "", "")
+            # Volcengine API endpoint (fixed for Beijing region)
+            # Users can use Model ID (e.g. doubao-1.5-pro-32k) or Endpoint ID (e.g. ep-20250101-xxxxx)
+            base_url = "https://ark.cn-beijing.volces.com/api/v3"
+            # Model parameter can be: Model ID or custom Endpoint ID
             
         elif provider == "Gemini (OpenAI-Format)":
             base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
