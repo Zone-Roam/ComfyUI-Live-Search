@@ -8,3 +8,12 @@ api_config.json
 venv/
 .specstory/
 .cursorindexingignore
+.cursor/
+
+# Temporary files
+fix_commits.sh
+fix_commits.py
+fix_msg.bat
+fix_msg.sh
+rebase_todo.txt
+test_volcengine.py
