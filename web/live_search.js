@@ -104,18 +104,17 @@ const API_LOADER_MODEL_CONFIGS = {
         "grok-beta"
     ],
     "Volcengine (Doubao)": [
-        "doubao-1.5-pro-32k",
-        "doubao-1.5-pro-256k",
-        "doubao-1.5-lite",
-        "doubao-1.5-vision-pro",
-        "doubao-1.5-thinking-pro",
-        "doubao-pro-32k",
-        "doubao-lite-32k",
+        "doubao-seed-1.6",
+        "doubao-seed-1.6-lite",
+        "doubao-seed-1.6-flash",
+        "doubao-seed-1.6-thinking",
+        "doubao-seed-code",
+        "doubao-seed-translation",
+        "doubao-seed-1.6-vision",
         "deepseek-v3.1",
         "deepseek-r1",
         "deepseek-v3",
-        "kimi-k2",
-        "custom-endpoint-id"
+        "kimi-k2"
     ],
     "Qwen (Aliyun)": [
         "qwen3-max",
