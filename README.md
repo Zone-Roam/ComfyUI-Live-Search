@@ -87,7 +87,7 @@ Then restart ComfyUI.
 | **optimize_prompt** | 🔄 Prompt Optimization Toggle (Recommended ON)<br>• **OFF** (default): Use original input directly<br>• **ON**: LLM optimizes your question into precise search keywords<br>  - Preserves original language (CN→CN, EN→EN)<br>  - Removes redundant words, keeps core info<br>  - Outputs before/after comparison |
 | **search_engine** | 🔍 **DuckDuckGo** (Only Option)<br>• Stable and automation-friendly<br>• Works reliably with proxies<br>• High-quality search results |
 | **provider** | Choose your LLM provider: `OpenAI`, `DeepSeek (Official/Aliyun/Volcengine)`, `Gemini`, etc. |
-| **model** | The model name (e.g., `gpt-4o-mini`, `deepseek-chat`, `deepseek-r1`). |
+| **model** | 🎯 Model Selection (Dropdown)<br>• **OpenAI**: gpt-4o, gpt-4o-mini, gpt-4-turbo, o1-preview, etc.<br>• **DeepSeek**: deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro, etc.<br>• Supports search filtering for quick model lookup |
 | **api_key** | (Optional) Your API Key. If left empty, it tries to load from `api_config.json`. |
 | **proxy** | (Optional) Proxy address like `http://127.0.0.1:7890`. Leave empty for direct connection. |
 

@@ -11,6 +11,40 @@ from .config_manager import ConfigManager
 # Initialize Config Manager
 config_manager = ConfigManager()
 
+# Model configurations for different providers
+MODEL_CONFIGS = {
+    "OpenAI": [
+        "gpt-4o",
+        "gpt-4o-mini",
+        "gpt-4-turbo",
+        "gpt-3.5-turbo",
+        "o1-preview",
+        "o1-mini"
+    ],
+    "DeepSeek (Official)": [
+        "deepseek-chat",
+        "deepseek-reasoner"
+    ],
+    "DeepSeek (Aliyun)": [
+        "deepseek-v3",
+        "deepseek-v2.5",
+        "deepseek-chat"
+    ],
+    "DeepSeek (Volcengine)": [
+        "deepseek-chat",
+        "deepseek-v3"
+    ],
+    "Gemini (OpenAI-Format)": [
+        "gemini-2.0-flash-exp",
+        "gemini-1.5-pro",
+        "gemini-1.5-flash",
+        "gemini-1.5-flash-8b"
+    ],
+    "Custom": [
+        "custom-model"
+    ]
+}
+
 class SearchTool:
     @staticmethod
     def search_duckduckgo(query, num_results=3, proxy=None):
@@ -124,6 +158,18 @@ class LiveSearchNode:
 
     @classmethod
     def INPUT_TYPES(s):
+        # Get all unique models across all providers for the dropdown
+        all_models = []
+        for provider_models in MODEL_CONFIGS.values():
+            all_models.extend(provider_models)
+        # Remove duplicates while preserving order
+        unique_models = []
+        seen = set()
+        for model in all_models:
+            if model not in seen:
+                unique_models.append(model)
+                seen.add(model)
+        
         return {
             "required": {
                 "prompt": ("STRING", {"multiline": True, "dynamicPrompts": False, "placeholder": "e.g., 北京现在的天气 / What is the weather in Tokyo?"}),
@@ -137,7 +183,7 @@ class LiveSearchNode:
                     "Gemini (OpenAI-Format)", 
                     "Custom"
                 ], {"default": "DeepSeek (Official)"}),
-                "model": ("STRING", {"default": "deepseek-chat", "multiline": False, "placeholder": "Model Name (e.g. deepseek-chat, deepseek-r1)"}),
+                "model": (unique_models, {"default": "deepseek-chat"}),
                 "num_results": ("INT", {"default": 3, "min": 1, "max": 10}),
             },
             "optional": {

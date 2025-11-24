@@ -87,7 +87,7 @@ pip install -r requirements.txt
 | **optimize_prompt** | 🔄 提示词优化开关（推荐开启）<br>• **关闭**（默认）：直接使用原始输入搜索<br>• **开启**：LLM 将问题优化为更精准的搜索关键词<br>  - 保持原语言（中文→中文，英文→英文）<br>  - 去除冗余词汇，保留核心信息<br>  - 输出优化前后对比 |
 | **search_engine** | 🔍 **DuckDuckGo**（唯一选项）<br>• 稳定可靠，对自动化访问友好<br>• 无需额外配置即可工作<br>• 搜索质量完全满足需求 |
 | **provider** | 选择 LLM 提供商：支持 `OpenAI`, `DeepSeek (官方/阿里云/火山)`, `Gemini` 等。 |
-| **model** | 模型名称（如 `gpt-4o-mini`, `deepseek-chat`, `deepseek-r1`）。 |
+| **model** | 🎯 模型选择（下拉列表）<br>• **OpenAI**: gpt-4o, gpt-4o-mini, gpt-4-turbo, o1-preview 等<br>• **DeepSeek**: deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-2.0-flash-exp, gemini-1.5-pro 等<br>• 支持搜索过滤，快速找到所需模型 |
 | **api_key** | （可选）你的 API Key。留空则尝试读取配置文件。 |
 | **proxy** | （可选）代理地址，如 `http://127.0.0.1:7890`。留空则直连。 |
 
