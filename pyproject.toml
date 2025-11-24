@@ -15,7 +15,7 @@ Repository = "https://github.com/Zone-Roam/ComfyUI-Live-Search"
 Documentation = "https://github.com/Zone-Roam/ComfyUI-Live-Search#readme"
 
 [tool.comfy]
-PublisherId = ""  # TODO: 填入你在 Comfy Registry 上的 Publisher ID
+PublisherId = "zone-roam"
 DisplayName = "Live Search Agent"
 Icon = ""  # 可选: 添加图标链接 (SVG, PNG, JPG or GIF, MAX 800x400px)
 
