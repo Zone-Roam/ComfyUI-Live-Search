@@ -22,11 +22,11 @@
 
 **ComfyUI Live Search** 让你的工作流直接访问互联网！这是一个功能强大的**联网搜索节点**，支持：
 
-✅ **实时搜索**: DuckDuckGo 搜索引擎,稳定可靠  
+✅ **实时搜索**: DuckDuckGo 搜索引擎，稳定可靠  
 ✅ **智能总结**: AI 自动阅读网页并提取关键信息  
-✅ **多模型支持**: GPT-5.1、DeepSeek-V3、Gemini 3 Pro、Claude 4.5、Qwen3 等 8+ LLM 提供商
-✅ **模块化架构**: API配置、搜索设置、执行逻辑分离,灵活复用  
-✅ **国内友好**: 完美支持国产大模型(通义千问/Qwen、豆包/Doubao、DeepSeek)
+✅ **多模型支持**: GPT-5.1、DeepSeek-V3、Gemini 3 Pro、Claude 4.5、Qwen3 等 8+ LLM 提供商  
+✅ **模块化架构**: API 配置、搜索设置、执行逻辑分离，灵活复用  
+✅ **国内友好**: 完美支持国产大模型（通义千问/Qwen、豆包/Doubao、DeepSeek）
 
 **典型应用场景**:
 - 🌤️ 查询实时天气生成对应场景图
