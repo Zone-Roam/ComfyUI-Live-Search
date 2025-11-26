@@ -161,9 +161,9 @@ Then restart ComfyUI.
 
 ---
 
-### Method 1: New Modular Architecture (Recommended) ⭐
+### Modular Node Workflow (Recommended) ⭐
 
-#### 1. **🔑 Live Search API Loader**
+#### **🔑 Live Search API Loader**
 
 Configure LLM API and model parameters.
 
@@ -178,7 +178,7 @@ Configure LLM API and model parameters.
 | **max_tokens** | Maximum output length |
 | **timeout** | Request timeout |
 
-#### 2. **⚙️ Live Search Settings**
+#### **⚙️ Live Search Settings**
 
 Configure search behavior.
 
@@ -191,7 +191,7 @@ Configure search behavior.
 | **optimize_query** | LLM-powered search keyword optimization (English-focused for better search recall) |
 | **proxy** | Proxy address (optional) |
 
-#### 3. **🌐 Live Search Agent**
+#### **🌐 Live Search Agent**
 
 Main search node, connects to the above two nodes.
 

@@ -161,9 +161,9 @@ pip install -r requirements.txt
 
 ---
 
-### 方式一：新版模块化架构（推荐）⭐
+### 模块化节点配置（推荐）⭐
 
-#### 1. **🔑 Live Search API Loader**
+#### **🔑 Live Search API Loader**
 
 配置 LLM API 和模型参数。
 
@@ -178,7 +178,7 @@ pip install -r requirements.txt
 | **max_tokens** | 最大输出长度 |
 | **timeout** | 请求超时时间 |
 
-#### 2. **⚙️ Live Search Settings**
+#### **⚙️ Live Search Settings**
 
 配置搜索行为。
 
@@ -191,7 +191,7 @@ pip install -r requirements.txt
 | **optimize_query** | LLM 搜索词优化（更利于英文搜索结果召回） |
 | **proxy** | 代理地址（可选） |
 
-#### 3. **🌐 Live Search Agent**
+#### **🌐 Live Search Agent**
 
 主搜索节点，连接上述两个节点。
 
