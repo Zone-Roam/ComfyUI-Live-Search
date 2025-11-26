@@ -49,7 +49,7 @@
 
 | Node | Function | Output |
 |------|----------|--------|
-| **🔑 Live Search API Loader** | API config & model selection | LLM_CONFIG |
+| **🔑 Live Search API Loader** | API config & model selection | MODEL_CONFIG |
 | **⚙️ Live Search Settings** | Search parameters | SEARCH_SETTINGS |
 | **🌐 Live Search Agent** | Main search logic | answer, source_urls, optimized_prompt |
 
@@ -69,36 +69,50 @@
 
 ## ✨ Key Features
 
-- **🔍 DuckDuckGo Search Engine**:
-  - Stable and automation-friendly
-  - No API key required, privacy-focused
-  - Proxy support for various network environments
-  - High-quality search results for real-time information retrieval
+- **🔍 DuckDuckGo Search Engine**  
+  Stable, proxy-friendly, no API key required. Perfect for real-time info retrieval and complements any LLM/VLM.
   
-- **🧠 Multiple LLM Provider Support** (Latest 2025 Models):
-  - **OpenAI**: GPT-5.1, GPT-5 series, GPT-4.1 series, GPT-4o series, O3 series reasoning models
-  - **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner (Official/Aliyun/Volcengine)
-  - **Gemini**: gemini-3-pro, gemini-2.5 series, gemini-2.0 series, gemini-1.5 series (OpenAI-compatible format)
-  - **Anthropic**: Claude 4.5 Sonnet/Haiku, Claude 4.1 Opus (native API support)
-  - **Volcengine (Doubao)**: doubao-seed-1.6 series, deepseek-v3.1 (tested and verified)
-  - **Qwen (Aliyun)**: qwen3-max, qwen-plus, qwen-flash (Aliyun DashScope)
-  - **SiliconFlow (硅基流动)**: DeepSeek-V3.2/V3.1/R1 series, Qwen3/Qwen2.5 series, GLM-4.6/4.5 series, Kimi-K2, ERNIE-4.5, and 69+ models (China-friendly, free tier available)
-  - **Grok**: grok-2 series (xAI Official)
-  - **Local Deployment**: Ollama supports llama4, qwen3, deepseek-v3, phi4, etc.
-  
-  **✅ All providers tested and verified for correct API authentication and response parsing**
+- **🧠 Multi-Provider Model Hub (Text & Vision)**  
+  - **OpenAI**: GPT-5.x, GPT-4.1 family, GPT-4o (now fully TI2T-capable)  
+  - **SiliconFlow**: DeepSeek, Qwen3/Qwen2.5 VL, GLM-4.5V, Qwen3-Omni, etc. (single provider covering 70+ CN models)  
+  - **DeepSeek Official / Aliyun / Volcengine**, **Gemini (OpenAI-format)**, **Anthropic Claude**, **Qwen (Aliyun)**, **Grok**, **Doubao**, **Ollama (local)**  
+  > ✅ Every provider is validated end-to-end (auth, payload, response parsing).
 
-- **🎯 Smart Features**:
-  - **Prompt Optimization**: Optional LLM-powered search keyword refinement for better precision
-  - **Multi-language Output**: Auto-detect, force Chinese, or force English output modes
-  - **Coordinate Search**: Automatic GPS coordinate to location name conversion using geopy
-  - **Web Search Toggle**: Enable/disable web search to use as a pure LLM node
-  - **Modular Architecture**: Separated API config, search settings, and execution logic for flexibility
+- **🖼️ Dual Mode: T2T & TI2T**  
+  - **T2T**: Traditional text-only LLM flow with web search + summarization  
+  - **TI2T**: Vision-language pipeline (prompt + IMAGE) for reverse image search, landmark recognition, document reading, etc.  
+  - TI2T supports **web search + image context fusion** (two-stage VLM call) and is available for **OpenAI GPT-5.1 / GPT-4o families** & **SiliconFlow VLMs**.
 
-- **☁️ Cloud & Privacy Security**:
-  - **API Key Safety**: Keys entered in nodes are **NOT saved to disk** (perfect for AutoDL, RunningHub shared environments)
-  - **Local Config**: Supports both `.env` and `api_config.json` configuration methods
-  - **Proxy Support**: Built-in proxy configuration for various network scenarios
+- **🌦️ Structured Tooling**  
+  - **Open-Meteo** integration for precise real-time weather/time when GPS coordinates are provided  
+  - **geopy + Nominatim** reverse geocoding (lat/lon → city/country)  
+  - **Query Optimization** (rename: `optimize_query`) improves English search keywords while keeping answers in your selected language  
+  - **Conflict resolution** prompts ensure VLM trusts web data for up-to-date info (time, weather).
+
+- **🈚 Multi-Language Output**  
+  Explicit output control: **中文** or **English** (no more “Auto” surprises). System prompts enforce consistency for both LLM and VLM flows.
+
+- **🔐 Cloud-Friendly Security**  
+  API keys never persist to disk, `.env` + `api_config.json` supported, and per-node proxy keeps shared GPU rentals safe.
+
+## 🧠 T2T vs TI2T Modes
+
+| Mode | Inputs | Model Slot | Flow | Perfect For |
+|------|--------|------------|------|-------------|
+| **T2T (Text → Text)** | Prompt | `t2t_model` | Search (DuckDuckGo) → scrape trusted sources → inject Open-Meteo & geopy context → LLM summarization. | Weather/time, news, fact checking, research, pure LLM chat (disable web search). |
+| **TI2T (Text + IMAGE → Text)** | Prompt + ComfyUI IMAGE tensor | `ti2t_model` | Encode image → VLM query generation → DuckDuckGo search → VLM final reasoning with image + search snippets. | Landmark recognition, “reverse image” info, screenshot comprehension, visual + real-time hybrid tasks. |
+
+**Implementation Notes**
+- API Loader now provides **independent `t2t_model` / `ti2t_model` dropdowns** per provider. Agent auto-selects based on Settings `mode`.
+- TI2T currently supports **OpenAI GPT-5.1 / GPT-4o / GPT-4-turbo** and **SiliconFlow VLM lineups** (Qwen3-VL, Qwen3-Omni, GLM-4.5V, DeepSeek-VL2, etc.).
+- TI2T keeps **web search optional**: when enabled, VLM runs twice (query generation + final answer) so image context stays synced with live data.
+- Both modes reuse the unified **`MODEL_CONFIG`** output, so legacy workflows remain compatible.
+
+#### OpenAI GPT-5.x usage notes
+- Access to GPT-5.1 family still requires an OpenAI plan with GPT-5 privileges (Pro/Team/Enterprise). If the API returns 404/403, double-check your account permissions.
+- Live Search automatically switches GPT-5.* calls to the **Responses API**. You do not need to edit the base URL; simply pick `gpt-5.1`, `gpt-5.1-mini`, `gpt-5`, `gpt-5-mini`, or `gpt-5-pro` in API Loader.
+- The node maps `max_tokens` → OpenAI's `max_output_tokens` under the hood, so you can keep using the same control in the UI.
+- TI2T (image + text) is currently validated for `gpt-5.1`, `gpt-5.1-mini`, `gpt-5`, `gpt-5-mini`, and `gpt-5-pro`. Older GPT-4 models stay available for backward compatibility.
 
 ## 🚀 Installation
 
@@ -153,10 +167,11 @@ Configure LLM API and model parameters.
 
 | Parameter | Description |
 |-----------|-------------|
-| **provider** | Choose provider: OpenAI, DeepSeek, Gemini, Anthropic, Grok, Doubao, Qwen, Ollama, etc. |
-| **model** | Select model from dropdown list |
+| **provider** | Choose provider: OpenAI, SiliconFlow, DeepSeek, Gemini, Anthropic, Qwen, Doubao, Ollama, etc. |
+| **t2t_model** | Text-only model for T2T mode (LLM) |
+| **ti2t_model** | Vision-language model for TI2T mode (VLM). Shows “No VLM models available” if the provider has none. |
 | **api_key** | API key (optional, supports .env) |
-| **base_url** | API endpoint (optional, uses default standard endpoints) |
+| **base_url** | API endpoint (optional, falls back to provider defaults) |
 | **temperature** | Temperature (0.0-2.0) |
 | **max_tokens** | Maximum output length |
 | **timeout** | Request timeout |
@@ -167,10 +182,11 @@ Configure search behavior.
 
 | Parameter | Description |
 |-----------|-------------|
+| **mode** | `T2T` (text) or `TI2T` (text + image). TI2T expects an IMAGE input on the Agent node. |
 | **enable_web_search** | Enable/disable web search (OFF = use as pure LLM) |
 | **num_results** | Number of search results (1-10) |
-| **output_language** | Output language: Auto / 中文 / English |
-| **optimize_prompt** | Whether to optimize search query |
+| **output_language** | Output language: `中文` or `English` |
+| **optimize_query** | LLM-powered search keyword optimization (English-focused for better search recall) |
 | **proxy** | Proxy address (optional) |
 
 #### 3. **🌐 Live Search Agent**
@@ -180,8 +196,10 @@ Main search node, connects to the above two nodes.
 | Input | Type | Description |
 |-------|------|-------------|
 | **prompt** | STRING | Your question |
-| **llm_config** | LLM_CONFIG | From API Loader |
+| **model_config** | MODEL_CONFIG | From API Loader |
 | **search_settings** | SEARCH_SETTINGS | From Settings |
+| *(optional)* **image** | IMAGE | Required when `mode = TI2T`. Pass any ComfyUI image tensor (RGB/RGBA). |
+| *(optional)* **role** | STRING | Custom system prompt injected before the default instructions. |
 
 | Output | Description |
 |--------|-------------|
@@ -200,8 +218,8 @@ Main search node, connects to the above two nodes.
 | Parameter | Description |
 | :--- | :--- |
 | **prompt** | Your question. Supports both Chinese and English. e.g., *"What's the weather in Beijing?"* or *"北京现在的天气"* |
-| **output_language** | 🌐 Output Language<br>• **Auto** (default): Automatically matches question language<br>• **中文**: Force Chinese output<br>• **English**: Force English output |
-| **optimize_prompt** | 🔄 Prompt Optimization Toggle (Recommended ON)<br>• **OFF** (default): Use original input directly<br>• **ON**: LLM optimizes your question into precise search keywords<br>  - Preserves original language (CN→CN, EN→EN)<br>  - Removes redundant words, keeps core info<br>  - Outputs before/after comparison |
+| **output_language** | 🌐 Output Language<br>• **中文**: Force Chinese output<br>• **English**: Force English output |
+| **optimize_query** | 🔄 Search Keyword Optimization (Recommended ON)<br>• **OFF** (default): Use original input directly<br>• **ON**: LLM rewrites the query (English keywords) for better DuckDuckGo recall<br>  - Preserves answer language via Agent settings<br>  - Removes redundancy, keeps core info<br>  - Outputs before/after comparison |
 | **provider** | Choose your LLM provider: `OpenAI`, `DeepSeek (Official/Aliyun/Volcengine)`, `Gemini`, etc. |
 | **model** | 🎯 Model Selection (Dropdown)<br>• **OpenAI**: gpt-5.1, gpt-5, gpt-4.1, o3, o3-pro, etc.<br>• **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-3-pro, gemini-2.5-pro, gemini-2.5-flash, etc.<br>• **Claude**: claude-sonnet-4-5, claude-haiku-4-5, etc.<br>• Supports search filtering for quick model lookup |
 | **api_key** | (Optional) Your API Key. If left empty, it tries to load from config files. |

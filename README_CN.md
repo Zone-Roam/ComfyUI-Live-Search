@@ -49,7 +49,7 @@
 
 | 节点 | 功能 | 输出 |
 |------|------|------|
-| **🔑 Live Search API Loader** | API 配置和模型选择 | LLM_CONFIG |
+| **🔑 Live Search API Loader** | API 配置和模型选择 | MODEL_CONFIG |
 | **⚙️ Live Search Settings** | 搜索参数配置 | SEARCH_SETTINGS |
 | **🌐 Live Search Agent** | 主搜索逻辑 | answer, source_urls, optimized_prompt |
 
@@ -69,36 +69,50 @@
 
 ## ✨ 核心特性
 
-- **🔍 DuckDuckGo 搜索引擎**：
-  - 稳定可靠，对自动化访问友好
-  - 无需 API Key，保护隐私
-  - 支持代理配置，适配各种网络环境
-  - 搜索质量完全满足实时信息检索需求
+- **🔍 DuckDuckGo 搜索引擎**  
+  稳定、代理友好、免 API Key，最适合作为实时信息抓取的基础。
   
-- **🧠 多 LLM 提供商支持**（2025年底最新模型）：
-  - **OpenAI**: GPT-5.1, GPT-5系列, GPT-4.1系列, GPT-4o系列, O3系列推理模型
-  - **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner（支持官方/阿里云/火山引擎）
-  - **Gemini**: gemini-3-pro, gemini-2.5系列, gemini-2.0系列, gemini-1.5系列（OpenAI兼容格式）
-  - **Anthropic**: Claude 4.5 Sonnet/Haiku, Claude 4.1 Opus（原生API支持）
-  - **火山引擎(豆包)**: doubao-seed-1.6系列, deepseek-v3.1（已测试验证）
-  - **通义千问**: qwen3-max, qwen-plus, qwen-flash（阿里云百炼）
-  - **硅基流动**: DeepSeek-V3.2/V3.1/R1系列, Qwen3/Qwen2.5系列, GLM-4.6/4.5系列, Kimi-K2, ERNIE-4.5等69+模型（国内友好，有免费额度）
-  - **Grok**: grok-2系列（xAI官方）
-  - **本地部署**: Ollama支持 llama4, qwen3, deepseek-v3, phi4等
-  
-  **✅ 所有供应商均已测试验证，确保 API 认证和响应解析正确**
+- **🧠 文本 + 视觉模型一网打尽**  
+  - **OpenAI**: GPT-5.x、GPT-4.1 系列、GPT-4o（已全面接入 TI2T）  
+  - **硅基流动**: DeepSeek、Qwen3/Qwen2.5 VL、GLM-4.5V、Qwen3-Omni……单一供应商覆盖 70+ VLM  
+  - **DeepSeek 官方/阿里/火山**、**Gemini (OpenAI-Format)**、**Anthropic Claude**、**Qwen (阿里云)**、**Grok**、**Doubao**、**Ollama 本地**  
+  > ✅ 所有供应商均已跑通：鉴权、payload、响应解析全验证。
 
-- **🎯 智能功能**：
-  - **提示词优化**：可选开启 LLM 优化搜索关键词，提升搜索精准度
-  - **多语言输出**：支持自动检测、强制中文、强制英文三种输出模式
-  - **坐标转换**：自动将 GPS 坐标转换为地名（使用 geopy 库）
-  - **联网开关**：可关闭联网搜索，作为纯 LLM 节点使用
-  - **模块化架构**：API 配置、搜索设置、执行逻辑分离，灵活复用
+- **🖼️ 双模式管线（T2T & TI2T）**  
+  - **T2T**：纯文本 LLM + 搜索 + 抓取 + 总结  
+  - **TI2T**：文本 + 图片输入，走 Vision-Language 流程，可做图片反推、地标识别、截图理解  
+  - TI2T 支持 **双阶段搜索**（VLM 生成搜索词 → 搜索 → VLM 最终回答），当前开放 **OpenAI GPT-5.1/4o/4-turbo** 与 **硅基流动 VLM 家族**。
 
-- **☁️ 云端与隐私安全**：
-  - **API Key 安全**：节点输入的 Key **不会保存到硬盘**（适配 AutoDL、RunningHub 等共享环境）
-  - **本地配置**：支持 `.env` 和 `api_config.json` 两种配置方式
-  - **代理支持**：内置代理配置选项，适应各种网络环境
+- **🌦️ 专业级工具链**  
+  - **Open-Meteo** 精准注入实时天气/时间（有坐标即可）  
+  - **geopy + Nominatim** 自动把经纬度反查城市名称  
+  - **Query Optimization (`optimize_query`)**：LLM 将自然语言提示转为高命中英文关键词，但回答仍按设定语言输出  
+  - **冲突处理策略**：当图片与实时信息冲突时，优先信任搜索数据，避免幻觉。
+
+- **🈚 输出语言可控**  
+  只保留 **中文 / English** 两种模式，系统 prompt 保证 LLM/VLM 双通道都严格遵守。
+
+- **🔐 云环境友好**  
+  API Key 不落盘，`.env` 与 `api_config.json` 双配置，节点级代理让共享 GPU 平台也能放心使用。
+
+## 🧠 T2T 与 TI2T 模式对比
+
+| 模式 | 输入 | 模型槽位 | 流程 | 典型场景 |
+|------|------|-----------|------|----------|
+| **T2T（Text → Text）** | 纯文本 Prompt | `t2t_model` | DuckDuckGo 搜索 → 抓取可信站点 → 注入 Open-Meteo & geopy 信息 → LLM 总结 | 实时天气、新闻、事实核查、只想纯 LLM 聊天（可关搜索）。 |
+| **TI2T（Text+Image → Text）** | Prompt + ComfyUI IMAGE 张量 | `ti2t_model` | 图像编码 → VLM 生成搜索词 → 搜索 → VLM 最终回答（融合图像+搜索） | 图片反推、地标识别、截图理解、视觉 + 实时信息混合任务。 |
+
+**实现要点**
+- API Loader 提供 **独立的 `t2t_model` / `ti2t_model` 下拉菜单**，Agent 会根据 Settings.mode 自动选择。
+- TI2T 目前支持 **OpenAI GPT-5.1/4o/4-turbo** 与 **硅基流动 VLM 系列**（Qwen3-VL、Qwen3-Omni、GLM-4.5V、DeepSeek-VL2 等）。
+- TI2T 可选开启联网搜索：打开后 VLM 会执行两次调用，确保图片语境与实时数据同步。
+- 两种模式共用统一的 **`MODEL_CONFIG`** 输出，旧版工作流无需重建。
+
+#### OpenAI GPT-5.x 使用提示
+- GPT-5.1 家族需要具备 GPT-5 权限的 OpenAI 账号（Pro / Team / Enterprise 等）。若 API 返回 403/404，请先确认账号额度。
+- 选择 `gpt-5.*` 时会自动切换到 **Responses API**，无需更改 base_url，只需在 API Loader 中选择 `gpt-5.1`、`gpt-5.1-mini`、`gpt-5`、`gpt-5-mini` 或 `gpt-5-pro`。
+- 节点会自动把 `max_tokens` 映射为 `max_output_tokens`，界面设置保持不变。
+- TI2T（图文输入）已验证支持 `gpt-5.1`、`gpt-5.1-mini`、`gpt-5`、`gpt-5-mini`、`gpt-5-pro`，旧版 GPT-4 系列仍可兼容。
 
 ## 🚀 安装说明
 
@@ -153,8 +167,9 @@ pip install -r requirements.txt
 
 | 参数 | 说明 |
 |------|------|
-| **provider** | 选择提供商：OpenAI, DeepSeek, Gemini, Anthropic, Grok, Doubao, Qwen, Ollama 等 |
-| **model** | 从下拉列表选择模型 |
+| **provider** | 选择提供商：OpenAI、硅基流动、DeepSeek、Gemini、Anthropic、Qwen、Doubao、Ollama 等 |
+| **t2t_model** | 文本模型（T2T 模式使用） |
+| **ti2t_model** | 视觉模型（TI2T 模式使用，无可用模型时会显示占位提示） |
 | **api_key** | API密钥（可选，支持 .env） |
 | **base_url** | API地址（可选，默认使用标准地址） |
 | **temperature** | 温度参数 (0.0-2.0) |
@@ -167,10 +182,11 @@ pip install -r requirements.txt
 
 | 参数 | 说明 |
 |------|------|
+| **mode** | `T2T`（文本）或 `TI2T`（文本+图像）。TI2T 需连接 IMAGE 输入。 |
 | **enable_web_search** | 启用/禁用联网搜索（关闭 = 作为纯 LLM 使用） |
 | **num_results** | 搜索结果数量 (1-10) |
-| **output_language** | 输出语言：Auto / 中文 / English |
-| **optimize_prompt** | 是否优化搜索词 |
+| **output_language** | 输出语言：`中文` 或 `English` |
+| **optimize_query** | LLM 搜索词优化（更利于英文搜索结果召回） |
 | **proxy** | 代理地址（可选） |
 
 #### 3. **🌐 Live Search Agent**
@@ -180,8 +196,10 @@ pip install -r requirements.txt
 | 输入 | 类型 | 说明 |
 |------|------|------|
 | **prompt** | STRING | 你的问题 |
-| **llm_config** | LLM_CONFIG | 来自 API Loader |
+| **model_config** | MODEL_CONFIG | 来自 API Loader |
 | **search_settings** | SEARCH_SETTINGS | 来自 Settings |
+| （可选）**image** | IMAGE | 当 `mode = TI2T` 时必须连接，支持任何 ComfyUI 图像张量 |
+| （可选）**role** | STRING | 自定义系统提示，注入在默认规则前 |
 
 | 输出 | 说明 |
 |------|------|
@@ -200,8 +218,8 @@ pip install -r requirements.txt
 | 参数名 | 说明 |
 | :--- | :--- |
 | **prompt** | 你的问题。支持中英文。例如 *"北京现在的天气"* 或 *"Who won the Super Bowl?"* |
-| **output_language** | 🌐 输出语言<br>• **Auto (跟随输入)**（默认）：根据问题语言自动判断<br>• **中文**：强制使用中文回答<br>• **English**：强制使用英文回答 |
-| **optimize_prompt** | 🔄 提示词优化开关（推荐开启）<br>• **关闭**（默认）：直接使用原始输入搜索<br>• **开启**：LLM 将问题优化为更精准的搜索关键词<br>  - 保持原语言（中文→中文，英文→英文）<br>  - 去除冗余词汇，保留核心信息<br>  - 输出优化前后对比 |
+| **output_language** | 🌐 输出语言<br>• **中文**：强制中文回答<br>• **English**：强制英文回答 |
+| **optimize_query** | 🔄 搜索词优化（推荐开启）<br>• **关闭**：直接使用原提示<br>• **开启**：LLM 将问题改写为更精准的英文搜索关键词（回答语言仍依据 Settings 设置）<br>  - 去冗余、保留核心信息<br>  - 输出优化前后对比 |
 | **search_engine** | 🔍 **DuckDuckGo**（唯一选项）<br>• 稳定可靠，对自动化访问友好<br>• 无需额外配置即可工作<br>• 搜索质量完全满足需求 |
 | **provider** | 选择 LLM 提供商：支持 `OpenAI`, `DeepSeek (官方/阿里云/火山)`, `Gemini` 等。 |
 | **model** | 🎯 模型选择（下拉列表）<br>• **OpenAI**: gpt-5.1, gpt-5, gpt-4.1, o3, o3-pro 等<br>• **DeepSeek**: deepseek-v3, deepseek-chat, deepseek-reasoner<br>• **Gemini**: gemini-3-pro, gemini-2.5-pro, gemini-2.5-flash 等<br>• **Claude**: claude-sonnet-4-5, claude-haiku-4-5 等<br>• 支持搜索过滤，快速找到所需模型 |
