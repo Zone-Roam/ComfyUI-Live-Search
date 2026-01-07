@@ -2,6 +2,18 @@ import { app } from "../../scripts/app.js";
 
 // Model configurations for API Loader
 const API_LOADER_MODEL_CONFIGS = {
+    "智谱AI": {
+        "t2t_models": [
+            "glm-4.5-Flash",
+            "glm-4-Flash-250414",
+            "glm-Z1-Flash"
+        ],
+        "ti2t_models": [
+            "glm-4.6V-Flash",
+            "glm-4V-Flash",
+            "glm-4.1V-Thinking-Flash"
+        ]
+    },
     "OpenAI": {
         "t2t_models": [
             "gpt-5.1",
@@ -153,13 +165,13 @@ const API_LOADER_MODEL_CONFIGS = {
             "Qwen/QwQ-32B",
             "Pro/Qwen/Qwen2.5-7B-Instruct",
             "Pro/Qwen/Qwen2-7B-Instruct",
-            "zai-org/GLM-4.6",
-            "zai-org/GLM-4.5-Air",
-            "zai-org/GLM-4.5",
-            "THUDM/GLM-Z1-32B-0414",
-            "THUDM/GLM-4-32B-0414",
-            "THUDM/GLM-Z1-Rumination-32B-0414",
-            "THUDM/GLM-4-9B-0414",
+            "zai-org/glm-4.6",
+            "zai-org/glm-4.5-Air",
+            "zai-org/glm-4.5",
+            "THUDM/glm-Z1-32B-0414",
+            "THUDM/glm-4-32B-0414",
+            "THUDM/glm-Z1-Rumination-32B-0414",
+            "THUDM/glm-4-9B-0414",
             "THUDM/glm-4-9b-chat",
             "Pro/THUDM/glm-4-9b-chat",
             "inclusionAI/Ling-1T",
@@ -195,13 +207,15 @@ const API_LOADER_MODEL_CONFIGS = {
             "Qwen/Qwen3-Omni-30B-A3B-Thinking",
             "Qwen/Qwen3-Omni-30B-A3B-Captioner",
             "Qwen/QVQ-72B-Preview",
-            "zai-org/GLM-4.5V",
-            "Pro/THUDM/GLM-4.1V-9B-Thinking",
-            "THUDM/GLM-4.1V-9B-Thinking"
+            "zai-org/glm-4.5V",
+            "Pro/THUDM/glm-4.1V-9B-Thinking",
+            "THUDM/glm-4.1V-9B-Thinking"
         ]
     },
     "Ollama (Local)": {
         "t2t_models": [
+            "huihui_ai/qwen3-vl-abliterated:8b-instruct",
+            "huihui_ai/qwen3-vl-abliterated:4b-instruct",
             "llama4",
             "llama3.3",
             "llama3.2",
@@ -212,8 +226,8 @@ const API_LOADER_MODEL_CONFIGS = {
             "phi4"
         ],
         "ti2t_models": [
-            "llama3.2-vision",
-            "llava"
+            "huihui_ai/qwen3-vl-abliterated:8b-instruct",
+            "huihui_ai/qwen3-vl-abliterated:4b-instruct"
         ]
     },
     "Custom": {
