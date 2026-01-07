@@ -11,6 +11,19 @@ config_manager = ConfigManager()
 # Expanded model configurations
 # 每个 provider 包含 base_url、t2t_models（文本模型）、ti2t_models（视觉模型）
 MODEL_CONFIGS = {
+    "智谱AI": {
+        "base_url": "https://open.bigmodel.cn/api/paas/v4/",
+        "t2t_models": [
+            "glm-4.5-Flash",
+            "glm-4-Flash-250414",
+            "glm-Z1-Flash"
+        ],
+        "ti2t_models": [
+            "glm-4.6V-Flash",
+            "glm-4V-Flash",
+            "glm-4.1V-Thinking-Flash"
+        ]
+    },
     "OpenAI": {
         "base_url": "https://api.openai.com/v1",
         "t2t_models": [
@@ -177,14 +190,14 @@ MODEL_CONFIGS = {
             "Qwen/QwQ-32B",
             "Pro/Qwen/Qwen2.5-7B-Instruct",
             "Pro/Qwen/Qwen2-7B-Instruct",
-            # GLM 系列（智谱）
-            "zai-org/GLM-4.6",
-            "zai-org/GLM-4.5-Air",
-            "zai-org/GLM-4.5",
-            "THUDM/GLM-Z1-32B-0414",
-            "THUDM/GLM-4-32B-0414",
-            "THUDM/GLM-Z1-Rumination-32B-0414",
-            "THUDM/GLM-4-9B-0414",
+            # glm 系列（智谱）
+            "zai-org/glm-4.6",
+            "zai-org/glm-4.5-Air",
+            "zai-org/glm-4.5",
+            "THUDM/glm-Z1-32B-0414",
+            "THUDM/glm-4-32B-0414",
+            "THUDM/glm-Z1-Rumination-32B-0414",
+            "THUDM/glm-4-9B-0414",
             "THUDM/glm-4-9b-chat",
             "Pro/THUDM/glm-4-9b-chat",
             # 其他模型
@@ -227,15 +240,17 @@ MODEL_CONFIGS = {
             "Qwen/Qwen3-Omni-30B-A3B-Captioner",
             # QVQ 系列
             "Qwen/QVQ-72B-Preview",
-            # GLM V 系列（视觉）
-            "zai-org/GLM-4.5V",
-            "Pro/THUDM/GLM-4.1V-9B-Thinking",
-            "THUDM/GLM-4.1V-9B-Thinking"
+            # glm V 系列（视觉）
+            "zai-org/glm-4.5V",
+            "Pro/THUDM/glm-4.1V-9B-Thinking",
+            "THUDM/glm-4.1V-9B-Thinking"
         ]
     },
     "Ollama (Local)": {
         "base_url": "http://127.0.0.1:11434/v1",
         "t2t_models": [
+            "huihui_ai/qwen3-vl-abliterated:8b-instruct",
+            "huihui_ai/qwen3-vl-abliterated:4b-instruct",
             "llama4",
             "llama3.3",
             "llama3.2",
@@ -246,8 +261,8 @@ MODEL_CONFIGS = {
             "phi4"
         ],
         "ti2t_models": [
-            "llama3.2-vision",
-            "llava"
+            "huihui_ai/qwen3-vl-abliterated:8b-instruct",
+            "huihui_ai/qwen3-vl-abliterated:4b-instruct"
         ]
     },
     "Custom": {
