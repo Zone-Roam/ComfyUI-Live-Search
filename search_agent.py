@@ -332,11 +332,10 @@ class LLMClient:
         elif "Aliyun" in provider or provider in ["DeepSeek (Aliyun)", "Qwen (Aliyun)"]:
             # DashScope compatible mode uses Bearer token (OpenAI format)
             headers["Authorization"] = f"Bearer {api_key}"
-        # Gemini (OpenAI-Format) - API key should be in query parameter, not header
+        # Gemini (OpenAI-Format) - uses standard Authorization header
         elif "Gemini" in provider:
-            # Gemini's OpenAI-compatible endpoint uses ?key= query parameter
-            # Don't add Authorization header for Gemini
-            url = f"{url}?key={api_key}"
+            # Gemini's OpenAI-compatible endpoint uses standard Bearer token
+            headers["Authorization"] = f"Bearer {api_key}"
         # Ollama (Local) - usually no auth needed, but some setups use it
         elif "Ollama" in provider:
             # Ollama typically doesn't need auth, but if API key is provided, use it
@@ -459,6 +458,12 @@ class LiveSearch_Agent:
             "gpt-4o-mini",
             "gpt-4-turbo"
         },
+        "Qwen (Aliyun)": {
+            "qwen3-vl-flash",
+            "qwen3-vl-flash-2025-10-15",
+            "qwen3-vl-plus",
+            "qwen3-vl-plus-2025-09-23"
+        },
         "SiliconFlow (硅基流动)": {
             # DeepSeek VLM 系列
             "deepseek-ai/DeepSeek-OCR",
@@ -494,6 +499,13 @@ class LiveSearch_Agent:
             "huihui_ai/qwen3-vl-abliterated:4b-instruct",
             "llama3.2-vision",
             "llava"
+        },
+        "Gemini (OpenAI-Format)": {
+            "gemini-2.5-flash",
+            "gemini-2.5-flash-lite",
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-lite",
+            "gemini-2.0-flash-live"
         },
         "Custom": {
             "custom-vlm-model"
